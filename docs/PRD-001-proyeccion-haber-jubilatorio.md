@@ -25,7 +25,7 @@
 
 ## 3. Requerimientos Funcionales
 - **RF-01:** El sistema debe obtener del servicio backend actual las fechas mínimas de jubilación del profesional para Jubilación Ordinaria y Jubilación Parcial al ingresar al módulo, salvo que el afiliado sea fallecido (RF-05).
-- **RF-02:** El sistema debe mostrar un botón con el texto "Inicie su trámite de jubilación aquí" si al menos una de las dos fechas mínimas de jubilación es menor o igual a hoy.
+- **RF-02:** El sistema debe mostrar un botón con el texto "Inicie su trámite de jubilación aquí" si al menos una de las dos fechas mínimas de jubilación es menor o igual a hoy. Al hacer clic, el botón debe abrir, en la misma pestaña, la página de Solicitud de Jubilación del sitio actual que corresponde al ambiente (ver Dependencias).
 - **RF-03:** El sistema debe permitir cambiar el tipo de beneficio propuesto entre Jubilación Ordinaria y Jubilación Parcial y, al cambiarlo, reemplazar la fecha de jubilación elegida por la fecha mínima del nuevo beneficio.
 - **RF-04:** El sistema debe permitir elegir la fecha de jubilación solo desde un selector de fecha, sin ingreso manual, con los días anteriores a la fecha mínima del beneficio elegido deshabilitados.
 - **RF-05:** El sistema debe mostrar la alerta "No es posible realizar proyección para afiliados con estado matricular fallecido" y deshabilitar el botón **Proyectar** si el estado de la matrícula del afiliado es "fallecido". En ese caso no se consultan ni se evalúan las fechas mínimas: solo se muestra esa alerta, sin la alerta de RF-11 ni el botón de RF-02. Los estados "activa", "cancelado" y "suspendido" permiten proyectar.
@@ -36,6 +36,7 @@
 - **RF-10:** El sistema debe mostrar el mensaje "No pudimos generar su proyección. Intente nuevamente." y volver a habilitar el botón **Proyectar** para reintentar si el servicio de proyección devuelve un error o no responde en 10 s. *(10 s: valor propuesto, a validar)*
 - **RF-11:** El sistema debe mostrar la alerta "Ud. se encuentra en condiciones de jubilarse" y deshabilitar el botón **Proyectar** si las dos fechas mínimas de jubilación son menores o iguales a hoy.
 - **RF-12:** El sistema debe permitir elegir una fecha de jubilación distinta de la propuesta.
+- **RF-13:** El sistema debe mostrar el mensaje "No pudimos cargar sus datos. Vuelva a ingresar al módulo." y deshabilitar el botón **Proyectar** si al ingresar al módulo no puede obtener el estado de la matrícula o las fechas mínimas de jubilación, incluso por una sesión vencida. En ese caso no se muestran las alertas de RF-05 y RF-11 ni el botón de RF-02, y no se ofrece un control propio para reintentar la carga.
 
 ---
 
@@ -73,7 +74,9 @@
 - **AC-21 (RNF-02):** Dado un afiliado con estado "activa" y las dos fechas mínimas posteriores a hoy, cuando ingresa al módulo y, sin cambiar ningún valor, hace 1 clic en **Proyectar**, entonces se genera el PDF.
 - **AC-22 (RNF-03):** Dada la pantalla con los valores por defecto, cuando se ve en 360×640, 768×1024, 1024×768 y 1920×1080 px, entonces no hay scroll horizontal, elementos superpuestos ni textos cortados, el botón **Proyectar** se ve sin scroll vertical, y el PDF se abre y se puede ver con el visor del navegador o del dispositivo.
 - **AC-23 (RNF-04):** Dada la pantalla de proyección, cuando se audita con una herramienta automática de accesibilidad (por ejemplo, axe) y se miden los elementos, entonces el contraste es ≥ 4,5:1 en el texto normal y ≥ 3:1 en el texto grande, el texto base mide ≥ 18 px, las áreas táctiles miden ≥ 44×44 px y están separadas por ≥ 8 px.
-- **AC-24 (RNF-05):** Dados los 5 navegadores de RNF-05, cuando se ejecutan los AC-01 a AC-19, entonces todos pasan en los 5.
+- **AC-24 (RNF-05):** Dados los 5 navegadores de RNF-05, cuando se ejecutan los AC-01 a AC-19, AC-25 y AC-26, entonces todos pasan en los 5.
+- **AC-25 (RF-13):** Dado un afiliado para el que no se puede obtener el estado de la matrícula o las fechas mínimas, incluso por una sesión vencida, cuando ingresa al módulo, entonces se muestra "No pudimos cargar sus datos. Vuelva a ingresar al módulo.", el botón **Proyectar** está deshabilitado, no se muestran las alertas de RF-05 y RF-11 ni el botón "Inicie su trámite de jubilación aquí", y no hay un control para reintentar la carga.
+- **AC-26 (RF-02):** Dado un afiliado que ve el botón "Inicie su trámite de jubilación aquí", cuando hace clic en él, entonces en la misma pestaña se abre la página de Solicitud de Jubilación del sitio actual que corresponde al ambiente.
 
 ---
 
@@ -94,6 +97,7 @@
 - Dependencia: el login y la sesión del sitio actual.
 - Dependencia: los servicios backend actuales de datos del afiliado, estado de matrícula, condición de jubilación, fechas mínimas y generación del PDF.
 - Dependencia: los diseños de pantalla aprobados (Opción A — Tarjeta única guiada).
+- Dependencia: la página de Solicitud de Jubilación del sitio actual. Producción: `https://www.cpbaonline.com.ar/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index` · QA: `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`.
 - Dependencia: el sitio actual no muestra el acceso al módulo de proyección a los afiliados jubilados (indicador de jubilado que devuelve el backend), por lo que este módulo no contempla ese caso.
 
 ---
