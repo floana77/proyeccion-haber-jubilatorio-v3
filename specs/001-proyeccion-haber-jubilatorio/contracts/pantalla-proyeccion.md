@@ -11,7 +11,7 @@ Lo que el afiliado ve y puede hacer. Qué elementos aparecen en cada situación 
 | Selector de fecha | Sin ingreso por teclado; días anteriores a la mínima deshabilitados; sin máximo | RF-04, RF-12 |
 | Fechas mínimas | Se muestran las dos | RF-01, AC-01 |
 | Botón **Proyectar** | Genera el reporte con la selección | RF-06 |
-| Indicador de carga | Visible mientras se genera | RF-09 |
+| Indicador de carga | Visible mientras se cargan los datos y mientras se genera | RF-09, RF-13 |
 | Botón de trámite | Navega en la misma pestaña a la URL del ambiente | RF-02, AC-26 |
 
 ## Textos literales

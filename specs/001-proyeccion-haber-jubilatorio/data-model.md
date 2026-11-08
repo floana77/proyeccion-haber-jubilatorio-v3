@@ -24,7 +24,8 @@ porque el módulo no puede decidir qué mostrar.
 1. Se obtiene el estado de la matrícula.
 2. Si es `fallecido`, no se piden las fechas mínimas.
 3. En otro caso, se piden las fechas mínimas.
-4. Una falla en cualquiera de los pasos lleva a `errorCarga`.
+4. Una falla en cualquiera de los pasos lleva a `errorCarga`, igual que si la secuencia completa tarda
+   más de 10 s.
 
 ### Qué muestra la pantalla
 
@@ -32,13 +33,15 @@ porque el módulo no puede decidir qué mostrar.
 
 | Situación | Alerta | Botón de trámite | Proyectar |
 |-----------|--------|------------------|-----------|
+| Cargando | Ninguna | No | Deshabilitado |
 | Falla de carga | Mensaje de RF-13 | No | Deshabilitado |
 | `fallecido`, con cualquier fecha | Alerta de RF-05 | No | Deshabilitado |
 | Las dos fechas cumplidas | Alerta de RF-11 | Sí | Habilitado |
 | Solo una fecha cumplida | Ninguna | Sí | Habilitado |
 | Ninguna fecha cumplida | Ninguna | No | Habilitado |
 
-Durante `generando`, **Proyectar** está siempre deshabilitado (RF-09).
+Durante `cargando` se ve el indicador de carga (RF-13). Durante `generando`, **Proyectar** está siempre
+deshabilitado (RF-09).
 
 ### Preselección (RF-07)
 
@@ -58,7 +61,7 @@ Durante `generando`, **Proyectar** está siempre deshabilitado (RF-09).
 ```text
 cargando ──> lista        datos válidos
 cargando ──> fallecido    estado de matrícula fallecido
-cargando ──> errorCarga   falla, sesión vencida o datos inválidos
+cargando ──> errorCarga   falla, sesión vencida, datos inválidos o 10 s sin respuesta
 ```
 
 `fallecido` y `errorCarga` son finales: no hay reintento dentro del módulo (RF-13).

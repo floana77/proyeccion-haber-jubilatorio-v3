@@ -35,7 +35,7 @@ Android y Safari en iOS (RNF-05).
 **Performance Goals**: generación del reporte < 2 s (p95), medida con al menos 20 pruebas manuales
 (RNF-01, SC-003). Depende de servicios que este proyecto no modifica.
 
-**Constraints**: plazo de 10 s por generación (RF-10); 1 clic con valores propuestos (RNF-02);
+**Constraints**: plazo de 10 s por generación (RF-10) y para la carga inicial (RF-13); 1 clic con valores propuestos (RNF-02);
 360–1920 px sin scroll horizontal (RNF-03); texto ≥ 18 px, contraste AA y áreas táctiles ≥ 44×44 px
 (RNF-04); build con `@angular-builders/custom-webpack:browser`, salida en `./build_package`.
 
@@ -59,7 +59,7 @@ y sin ellos el módulo no puede salir a producción.
 
 | Principio | Cómo se cumple | Inicial | Post-diseño |
 |-----------|----------------|---------|-------------|
-| I. Alcance limitado al PRD | Cada decisión se traza a un RF, RNF o AC. La pestaña con texto de espera (R4) implementa RF-08 y RF-09 | Pasa | Pasa |
+| I. Alcance limitado al PRD | Cada decisión se traza a un RF, RNF o AC. La pestaña con texto de espera (R4) está definida en RF-08 | Pasa | Pasa |
 | II. Test-First | `domain/` y `ProyeccionStore` concentran las reglas de RF-02, 03, 04, 05, 07, 09, 10, 11 y 13, con tests que fallan primero | Pasa | Pasa |
 | III. Sin secretos | Sin credenciales en el repo ni en el bundle; los `environment*.ts` tienen solo configuración no secreta. La sesión es del sitio actual | Pasa | Pasa |
 | IV. Solo servicios y sesión actuales | Sin endpoints nuevos, sin login y sin cambios en el cálculo o el PDF. El puerto solo describe consumo | Pasa | Pasa |

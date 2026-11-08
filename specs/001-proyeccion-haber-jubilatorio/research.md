@@ -48,7 +48,8 @@
 
 ## R5. Plazo de 10 s, respuestas tardías y doble clic
 
-- **Decision**: flujo RxJS con `timeout(10_000)` sobre la generación, y una sola generación activa
+- **Decision**: flujo RxJS con `timeout(10_000)` sobre la generación y sobre toda la secuencia de carga inicial
+  (RF-13), y una sola generación activa
   controlada por `ProyeccionStore`. Al vencer el plazo se cancela la suscripción.
 - **Rationale**: la cancelación descarta la respuesta tardía y el estado `generando` impide una
   segunda solicitud (AC-17, AC-19).

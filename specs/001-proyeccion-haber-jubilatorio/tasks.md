@@ -33,7 +33,7 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 - [ ] T003 [P] Crear tsconfig.json, tsconfig.app.json y tsconfig.spec.json en modo estricto en la raíz del repositorio
 - [ ] T004 [P] Crear config/webpack.custom.js con una configuración adicional vacía que exporte un objeto válido
 - [ ] T005 [P] Crear karma.conf.js con Jasmine y el navegador ChromeHeadless, tomando la ruta de Chrome de la variable `CHROME_BIN`
-- [ ] T006 Crear src/index.html, src/main.ts, src/app/app.config.ts y src/app/app.component.ts como aplicación standalone mínima, sin router (research R9)
+- [ ] T006 Crear src/index.html, src/main.ts, src/app/app.config.ts y src/app/app.component.ts como aplicación standalone mínima, sin router (research R9), y src/app/app.component.spec.ts con un test que compruebe que el componente se crea
 - [ ] T007 [P] Crear src/styles.scss con el tema de PrimeNG, PrimeFlex, PrimeIcons y texto base de 18 px (RNF-04)
 - [ ] T008 Instalar dependencias generando package-lock.json y comprobar que `npm test` y `npm run build` terminan sin errores; requiere Chrome instalado en la máquina
 
@@ -74,20 +74,20 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 > **NOTE: Escribir estos tests PRIMERO y comprobar que FALLEN antes de implementar**
 
 - [ ] T020 [P] [US1] Escribir tests de preselección en src/app/proyeccion/domain/preseleccion.spec.ts: AC-06 (Parcial menor), AC-07 (iguales, Ordinaria) y AC-08 (Parcial anterior a hoy se preselecciona igual)
-- [ ] T021 [P] [US1] Escribir tests en src/app/proyeccion/domain/vista-pantalla.spec.ts para las filas "Falla de carga" (mensaje RF-13, sin botón de trámite, Proyectar deshabilitado) y "Ninguna fecha cumplida" (sin alerta, sin botón, Proyectar habilitado), incluido Proyectar deshabilitado durante `generando`
-- [ ] T022 [P] [US1] Escribir tests en src/app/proyeccion/platform/pestana-reporte.service.spec.ts con `window` simulado: abre con `window.open` sin `noopener`, escribe "Generando su proyección…", muestra el PDF navegando a él, cierra la pestaña y devuelve nulo si el navegador la bloquea
-- [ ] T023 [US1] Escribir tests en src/app/proyeccion/state/proyeccion.store.spec.ts con gateway simulado: carga exitosa (AC-01), `errorCarga` ante falla o sesión vencida (AC-25), preselección, generación con la selección (AC-15, AC-21), segundo clic sin nueva solicitud (AC-17), error con cierre de pestaña y reintento (AC-18), plazo de 10 s con `fakeAsync` y respuesta tardía descartada (AC-19) y pestaña bloqueada sin pedir el reporte
-- [ ] T024 [P] [US1] Escribir tests en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts: muestra las dos fechas mínimas (AC-01), beneficio y fecha propuestos, indicador de carga (AC-17), mensajes literales de RF-10 y RF-13 y sin control de reintento de carga (AC-25)
+- [ ] T021 [P] [US1] Escribir tests en src/app/proyeccion/domain/vista-pantalla.spec.ts para las filas "Cargando" (sin alerta, sin botón de trámite, Proyectar deshabilitado), "Falla de carga" (mensaje RF-13, sin botón de trámite, Proyectar deshabilitado) y "Ninguna fecha cumplida" (sin alerta, sin botón, Proyectar habilitado), incluido Proyectar deshabilitado durante `generando`
+- [ ] T022 [P] [US1] Escribir tests en src/app/proyeccion/platform/pestana-reporte.service.spec.ts con `window` simulado: abre con `window.open` sin `noopener`, escribe "Generando su proyección…", muestra el PDF navegando a él, cierra la pestaña, devuelve nulo si el navegador la bloquea y libera el enlace temporal 60 s después de cargar el PDF
+- [ ] T023 [US1] Escribir tests en src/app/proyeccion/state/proyeccion.store.spec.ts con gateway simulado: carga exitosa (AC-01), `errorCarga` ante falla, sesión vencida o 10 s sin respuesta con `fakeAsync` (AC-25), preselección, generación con la selección (AC-15, AC-21), segundo clic sin nueva solicitud (AC-17), error con cierre de pestaña y reintento (AC-18), plazo de 10 s con `fakeAsync` y respuesta tardía descartada (AC-19) y pestaña bloqueada sin pedir el reporte (AC-27)
+- [ ] T024 [P] [US1] Escribir tests en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts: muestra las dos fechas mínimas (AC-01), beneficio y fecha propuestos, indicador de carga durante la generación (AC-17) y durante la carga inicial (AC-28), mensajes literales de RF-10 y RF-13 y sin control de reintento de carga (AC-25)
 
 ### Implementation for User Story 1
 
 - [ ] T025 [P] [US1] Implementar la preselección en src/app/proyeccion/domain/preseleccion.ts (RF-07): "Si son iguales, se elige `ordinaria`"
-- [ ] T026 [P] [US1] Implementar `calcularVista` para las filas de T021 en src/app/proyeccion/domain/vista-pantalla.ts
-- [ ] T027 [P] [US1] Implementar `PestanaReporte` en src/app/proyeccion/platform/pestana-reporte.service.ts (research R4), liberando el enlace temporal del PDF después de cargarlo
-- [ ] T028 [US1] Implementar `ProyeccionStore` con signals y estados `cargando`, `lista`, `errorCarga` e `inactiva`, `generando`, `error` en src/app/proyeccion/state/proyeccion.store.ts; `window.open` MUST ejecutarse de forma sincrónica en el clic y el plazo con `timeout(10_000)` (research R5)
+- [ ] T026 [P] [US1] Implementar `calcularVista` para las filas de T021, incluida "Cargando", en src/app/proyeccion/domain/vista-pantalla.ts
+- [ ] T027 [P] [US1] Implementar `PestanaReporte` en src/app/proyeccion/platform/pestana-reporte.service.ts (research R4), liberando el enlace temporal del PDF 60 s después de cargarlo
+- [ ] T028 [US1] Implementar `ProyeccionStore` con signals y estados `cargando`, `lista`, `errorCarga` e `inactiva`, `generando`, `error` en src/app/proyeccion/state/proyeccion.store.ts, con la secuencia de carga de data-model.md (primero el estado y luego las fechas) y `timeout(10_000)` sobre toda la secuencia; `window.open` MUST ejecutarse de forma sincrónica en el clic y el plazo de la generación con `timeout(10_000)` (research R5)
 - [ ] T029 [US1] Implementar la pantalla con beneficio y fecha como texto, botón **Proyectar**, indicador y `p-message` en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.ts y proyeccion-page.component.html, sin reglas de decisión en la plantilla
 - [ ] T030 [US1] Mostrar la pantalla desde src/app/app.component.ts y proveer `ProyeccionStore` a nivel de la pantalla
-- [ ] T031 [US1] Comprobar con `npm start` los escenarios `futuras`, `futuras-iguales`, `parcial-menor`, `parcial-vencida`, `error-carga`, `lento`, `error-reporte` y `sin-respuesta` de specs/001-proyeccion-haber-jubilatorio/quickstart.md
+- [ ] T031 [US1] Comprobar con `npm start` los escenarios `futuras`, `futuras-iguales`, `parcial-menor`, `parcial-vencida`, `error-carga`, `lento`, `error-reporte`, `sin-respuesta`, `carga-lenta` y `carga-sin-respuesta` de specs/001-proyeccion-haber-jubilatorio/quickstart.md
 
 **Checkpoint**: la Historia 1 funciona de punta a punta con mocks
 
@@ -154,7 +154,7 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 ### Implementation for User Story 4
 
 - [ ] T049 [P] [US4] Completar `calcularVista` con la fila de fallecido en src/app/proyeccion/domain/vista-pantalla.ts
-- [ ] T050 [P] [US4] Agregar el estado `fallecido` y la secuencia de carga de data-model.md a src/app/proyeccion/state/proyeccion.store.ts
+- [ ] T050 [P] [US4] Agregar el estado `fallecido` a src/app/proyeccion/state/proyeccion.store.ts: con ese estado no se piden las fechas mínimas
 - [ ] T051 [US4] Agregar la alerta de fallecido y deshabilitar los controles en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
 
 **Checkpoint**: las cuatro historias funcionales están completas
@@ -172,11 +172,11 @@ Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 - [ ] T052 [US5] Aplicar el diseño "Opción A — Tarjeta única guiada" y el responsive de 360 a 1920 px, con **Proyectar** visible sin scroll desde 360×640, en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss
 - [ ] T053 [US5] Ajustar en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss los componentes de PrimeNG: contraste ≥ 4,5:1 (texto normal) y ≥ 3:1 (texto grande), texto ≥ 18 px, áreas táctiles ≥ 44×44 px y separación ≥ 8 px
 - [ ] T054 [US5] Agregar etiquetas accesibles a selectores, indicador y alertas en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
-- [ ] T055 [US5] Crear specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md y registrar ahí la verificación de AC-22 en 360×640, 768×1024, 1024×768 y 1920×1080
-- [ ] T056 [US5] Auditar con axe y medir los elementos (AC-23), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
-- [ ] T057 [US5] Ejecutar en los 5 navegadores AC-02 a AC-14, AC-17 a AC-19, AC-21, AC-25 y AC-26 con mocks (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
-- [ ] T058 [US5] Comprobar en Chrome Android y Safari iOS con dispositivos reales que el PDF se abre y no queda solo como descarga (AC-16), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
-- [ ] T059 [US5] Realizar la prueba de usabilidad con afiliados de 60 años o más (SC-007), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
+- [ ] T055 [US5] (manual: la realiza una persona) Crear specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md y registrar ahí la verificación de AC-22 en 360×640, 768×1024, 1024×768 y 1920×1080
+- [ ] T056 [US5] (manual: la realiza una persona) Auditar con axe y medir los elementos (AC-23), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
+- [ ] T057 [US5] (manual: la realiza una persona) Ejecutar en los 5 navegadores AC-02 a AC-14, AC-17 a AC-19, AC-21 y AC-25 a AC-28 con mocks, en los navegadores a los que aplican (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
+- [ ] T058 [US5] (manual: la realiza una persona) Comprobar en Chrome Android y Safari iOS con dispositivos reales que el PDF se abre y no queda solo como descarga (AC-16), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
+- [ ] T059 [US5] (manual: la realiza una persona) Realizar la prueba de usabilidad con afiliados de 60 años o más (SC-007), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
 
 **Checkpoint**: la pantalla cumple los requisitos visuales
 
@@ -206,9 +206,9 @@ Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 - [ ] T066 Reemplazar la versión temporal de `ProyeccionHttpGateway` por llamadas reales con la sesión del sitio actual, sin guardar credenciales, en src/app/proyeccion/data/proyeccion-http.gateway.ts (bloqueada por B1 y B2)
 - [ ] T067 Configurar la publicación y el `base href` en angular.json y src/index.html (bloqueada por B3)
 - [ ] T068 Pasar QA a los servicios reales o a servidores mock de Postman, quitando la importación del gateway en memoria de src/environments/environment.qa.ts (bloqueada por B1)
-- [ ] T069 Verificar en QA, en los 5 navegadores (AC-24), AC-01 con datos reales, AC-15 y SC-005 contra el sitio actual, AC-25 y RF-10 con sesión vencida, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por B1, B2 y B3)
-- [ ] T070 Medir en producción SC-001, SC-002, AC-20 y SC-003 con al menos 20 pruebas manuales desde el navegador, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por T066 y T067; requiere la salida a producción)
-- [ ] T071 Medir SC-004 del 01/03/2027 al 31/03/2027 con la misma fuente de la tabla del PRD, sin contar las pruebas manuales, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (requiere la salida a producción)
+- [ ] T069 (manual: la realiza una persona) Verificar en QA AC-01 con datos reales y AC-25 y RF-10 con sesión vencida en los 5 navegadores, y AC-15 y SC-005 contra el sitio actual en los 3 de escritorio (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por B1, B2 y B3)
+- [ ] T070 (manual: la realiza una persona) Medir en producción, del 01/03/2027 al 31/03/2027, SC-001, SC-002, AC-20 y SC-003 con al menos 20 pruebas manuales desde el navegador, con el p95 por rango más cercano, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por T066 y T067; requiere la salida a producción)
+- [ ] T071 (manual: la realiza una persona) Medir SC-004 del 01/03/2027 al 31/03/2027 con la misma fuente de la tabla del PRD, sin contar las pruebas manuales, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (requiere la salida a producción)
 
 ---
 
@@ -285,6 +285,8 @@ Task: "Pestaña en src/app/proyeccion/platform/pestana-reporte.service.ts"
 
 - [P] = archivos distintos, sin dependencias pendientes
 - Comprobar que los tests fallen antes de implementar
+- `/speckit-implement` deja sin marcar las tareas manuales
+- Cada commit incluye el test y su implementación, con `npm test` en verde
 - La palabra `escenario` y la clase `ProyeccionEnMemoriaGateway` no pueden llegar al build de producción
 - No inventar endpoints ni formatos: la Fase 9 espera los contratos reales
 - Fuera de estas tareas: revisar el diseño aprobado si muestra **Proyectar** deshabilitado con las dos fechas cumplidas, y avisar del cambio de RF-11 a la Gerencia de Seguridad Social

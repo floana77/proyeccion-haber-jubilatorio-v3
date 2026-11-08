@@ -70,15 +70,23 @@ abre el PDF.
    **Proyectar** está deshabilitado y un segundo clic no envía otra solicitud.
 9. (AC-18) **Dado** un servicio de proyección que devuelve un error, **Cuando** el afiliado hace
    clic en **Proyectar**, **Entonces** se muestra "No pudimos generar su proyección. Intente
-   nuevamente." y el botón **Proyectar** vuelve a estar habilitado.
+   nuevamente.", el botón **Proyectar** vuelve a estar habilitado y la pestaña abierta al hacer clic
+   se cierra.
 10. (AC-19) **Dado** un servicio de proyección que no responde, **Cuando** el afiliado hace clic en
     **Proyectar**, **Entonces** a los 10 s se muestra "No pudimos generar su proyección. Intente
-    nuevamente." y el botón **Proyectar** vuelve a estar habilitado.
+    nuevamente.", el botón **Proyectar** vuelve a estar habilitado y la pestaña abierta al hacer clic
+    se cierra.
 11. (AC-25) **Dado** un afiliado para el que no se puede obtener el estado de la matrícula o las
-    fechas mínimas, incluso por una sesión vencida, **Cuando** ingresa al módulo, **Entonces** se
-    muestra "No pudimos cargar sus datos. Vuelva a ingresar al módulo.", el botón **Proyectar** está
+    fechas mínimas, incluso por una sesión vencida o por no obtenerlos en 10 s en total, **Cuando**
+    ingresa al módulo, **Entonces** se muestra "No pudimos cargar sus datos. Vuelva a ingresar al módulo.", el botón **Proyectar** está
     deshabilitado, no se muestran las alertas de fallecido y de condiciones de jubilarse ni el botón
     de trámite, y no hay un control para reintentar la carga.
+12. (AC-27) **Dado** un navegador que no permite abrir la pestaña, **Cuando** el afiliado hace clic
+    en **Proyectar**, **Entonces** se muestra "No pudimos generar su proyección. Intente nuevamente.", no se
+    envía la solicitud y el botón **Proyectar** sigue habilitado.
+13. (AC-28) **Dados** datos que tardan en cargarse, **Cuando** el afiliado ingresa al módulo,
+    **Entonces** mientras espera se ve el indicador de carga y el botón **Proyectar** está
+    deshabilitado.
 
 ---
 
@@ -185,10 +193,12 @@ tamaño de texto y áreas táctiles.
    elementos, **Entonces** el contraste es ≥ 4,5:1 en el texto normal y ≥ 3:1 en el texto grande, el
    texto base mide ≥ 18 px, las áreas táctiles miden ≥ 44×44 px y están separadas por ≥ 8 px.
 3. (AC-24) **Dados** los 5 navegadores requeridos, **Cuando** se ejecutan los criterios AC-01 a
-   AC-19, AC-25 y AC-26, **Entonces** todos pasan en los 5.
+   AC-19 y AC-25 a AC-28, **Entonces** todos pasan en los navegadores a los que aplican: AC-15 en los
+   3 de escritorio, AC-16 en los 2 de celular y el resto en los 5.
 4. (AC-20) **Dado** el período de medición en producción, **Cuando** se calcula el tiempo de
    generación del reporte con un conjunto de al menos 20 pruebas manuales desde el navegador, **Entonces** el p95
-   es menor a 2 s.
+   es menor a 2 s. El p95 se calcula por rango más cercano: con 20 pruebas, es el valor 19 ordenado de
+   menor a mayor.
 
 ---
 
@@ -206,9 +216,9 @@ tamaño de texto y áreas táctiles.
 - **El servicio rechaza una fecha lejana**: se aplica el mensaje de error de RF-10, ya que el
   selector no tiene fecha máxima.
 - **El navegador impide abrir la pestaña incluso en el momento del clic**: se aplica el mensaje de
-  error de RF-10 y **Proyectar** vuelve a estar habilitado.
+  error de RF-10, no se solicita el reporte y **Proyectar** sigue habilitado (AC-27).
 - **La sesión vence antes de proyectar**: el servicio responde con error y se aplica RF-10.
-- **Falla la carga inicial de los datos o la sesión ya venció al ingresar**: se muestra el mensaje que
+- **Falla la carga inicial de los datos, no llegan en 10 s o la sesión ya venció al ingresar**: se muestra el mensaje que
   pide volver a ingresar y **Proyectar** queda deshabilitado (FR-018).
 
 ## Requirements *(mandatory)*
@@ -239,13 +249,14 @@ tamaño de texto y áreas táctiles.
   Jubilación Ordinaria.
 - **FR-008** (RF-08): El sistema MUST mostrar el reporte en PDF: en una nueva pestaña en navegadores
   de escritorio, y en una nueva pestaña o en el visor de PDF del dispositivo en móviles. La pestaña MUST abrirse en el
-  mismo momento del clic en **Proyectar** y el PDF MUST cargarse en ella cuando esté listo. Si el
+  mismo momento del clic en **Proyectar**, MUST mostrar "Generando su proyección…" mientras espera y el PDF MUST cargarse en ella cuando esté listo. Si el
   servicio devuelve un error o no responde en el plazo de FR-010, esa pestaña MUST cerrarse.
 - **FR-009** (RF-09): El sistema MUST mostrar un indicador de carga y deshabilitar **Proyectar**
   mientras espera la respuesta del servicio de proyección.
-- **FR-010** (RF-10): Si el servicio de proyección devuelve un error o no responde en 10 s, el sistema
-  MUST mostrar "No pudimos generar su proyección. Intente nuevamente." y volver a habilitar
-  **Proyectar** para reintentar.
+- **FR-010** (RF-10): Si el servicio de proyección devuelve un error o no responde en 10 s, o si el
+  navegador no permite abrir la pestaña de FR-008, el sistema MUST mostrar "No pudimos generar su
+  proyección. Intente nuevamente." y volver a habilitar **Proyectar** para reintentar. Si el navegador
+  no permite abrir la pestaña, el sistema MUST NOT solicitar el reporte.
 - **FR-011** (RF-11): Si las dos fechas mínimas son menores o iguales a hoy, el sistema MUST mostrar
   la alerta "Ud. se encuentra en condiciones de jubilarse" y mantener **Proyectar** habilitado.
 - **FR-012** (RF-12): Los afiliados MUST poder elegir una fecha de jubilación distinta de la propuesta.
@@ -262,9 +273,10 @@ tamaño de texto y áreas táctiles.
 - **FR-017** (RNF-05): El módulo MUST funcionar en la última versión estable de Chrome, Edge y Firefox
   en escritorio, y de Chrome en Android y Safari en iOS.
 - **FR-018** (RF-13): Si no se pueden obtener al ingresar el estado de la matrícula o las fechas
-  mínimas, incluso por una sesión vencida, el sistema MUST mostrar "No pudimos cargar sus datos. Vuelva
+  mínimas, incluso por una sesión vencida o porque no se obtuvieron en 10 s en total, el sistema MUST mostrar "No pudimos cargar sus datos. Vuelva
   a ingresar al módulo.", deshabilitar **Proyectar** y no mostrar las alertas de FR-005 y FR-011 ni el
-  botón de FR-002. El sistema MUST NOT ofrecer un control propio para reintentar la carga.
+  botón de FR-002. El sistema MUST NOT ofrecer un control propio para reintentar la carga. Mientras se
+  cargan los datos, el sistema MUST mostrar un indicador de carga y deshabilitar **Proyectar**.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -287,13 +299,14 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
 - **SC-002** (OBJ-02): Con los valores propuestos, el reporte se genera con 1 clic (hoy son 2).
 - **SC-003** (OBJ-03, RNF-01): El 95 % de los reportes se genera en menos de 2 s (hoy, unos 4 s
   medidos a mano), según un conjunto de al menos 20 pruebas manuales en producción desde el
-  navegador.
+  navegador. El p95 se calcula por rango más cercano: con 20 pruebas, es el valor 19 ordenado de menor a
+  mayor.
 - **SC-004** (OBJ-04): Se generan al menos 11 proyecciones por mes (hoy, mediana de 5,5), según la
   misma fuente de la línea base del PRD y sin contar las pruebas manuales.
 - **SC-005** (AC-15): En el 100 % de los casos comparados antes del release, el PDF contiene los mismos
   datos que el del sitio actual para el mismo afiliado, beneficio y fecha.
-- **SC-006** (AC-24): Antes del release, el 100 % de los criterios AC-01 a AC-19, AC-25 y AC-26
-  pasa en los 5 navegadores.
+- **SC-006** (AC-24): Antes del release, el 100 % de los criterios AC-01 a AC-19 y AC-25 a AC-28
+  pasa en los navegadores a los que aplica, según AC-24.
 - **SC-007** (riesgo del PRD): Antes del release se completa una prueba de usabilidad con afiliados de
   60 años o más.
 

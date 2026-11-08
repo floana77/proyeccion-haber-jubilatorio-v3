@@ -38,6 +38,8 @@ Con `npm start` o `npm start -- -c qa`, el gateway en memoria elige los datos co
 | `fallecido` | Estado fallecido, fechas anteriores a hoy | AC-13 |
 | `cancelado`, `suspendido` | Estado indicado, fechas posteriores a hoy | AC-14 |
 | `error-carga` | Falla al obtener los datos | AC-25 |
+| `carga-lenta` | Los datos tardan 3 s | AC-28 |
+| `carga-sin-respuesta` | La carga nunca responde | AC-25 |
 | `lento` | El reporte tarda 3 s | AC-17 |
 | `error-reporte` | El reporte falla | AC-18 |
 | `sin-respuesta` | El reporte nunca responde | AC-19 |
@@ -61,7 +63,8 @@ muestra el mensaje de RF-13 en este build, porque todavía no está conectada a 
 |--------------|------|----------|
 | Responsive | Pantalla en 360×640, 768×1024, 1024×768 y 1920×1080 | AC-22 |
 | Accesibilidad | Auditoría con axe y medición de texto y áreas táctiles | AC-23 |
-| Navegadores | AC-01 a AC-19, AC-25 y AC-26 en los 5 navegadores | AC-24 |
+| Navegadores | AC-01 a AC-19 y AC-25 a AC-28 en los navegadores a los que aplican | AC-24 |
+| Pestaña bloqueada | Bloquear las ventanas emergentes en el navegador | AC-27 |
 | PDF en celular | Chrome en Android y Safari en iOS, con dispositivos reales | AC-16 |
 | Usabilidad | Prueba con afiliados de 60 años o más | SC-007 |
 
