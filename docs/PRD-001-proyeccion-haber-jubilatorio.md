@@ -34,7 +34,7 @@
 - **RF-08:** El sistema debe mostrar el reporte de la proyección en formato PDF. En navegadores de escritorio debe abrirlo en una nueva pestaña. En dispositivos móviles debe abrirlo en una nueva pestaña o en el visor de PDF del dispositivo.
 - **RF-09:** El sistema debe mostrar un indicador de carga y deshabilitar el botón **Proyectar** mientras espera la respuesta del servicio de proyección.
 - **RF-10:** El sistema debe mostrar el mensaje "No pudimos generar su proyección. Intente nuevamente." y volver a habilitar el botón **Proyectar** para reintentar si el servicio de proyección devuelve un error o no responde en 10 s. *(10 s: valor propuesto, a validar)*
-- **RF-11:** El sistema debe mostrar la alerta "Ud. se encuentra en condiciones de jubilarse" y deshabilitar el botón **Proyectar** si las dos fechas mínimas de jubilación son menores o iguales a hoy.
+- **RF-11:** El sistema debe mostrar la alerta "Ud. se encuentra en condiciones de jubilarse" si las dos fechas mínimas de jubilación son menores o iguales a hoy. En ese caso, el botón **Proyectar** sigue habilitado.
 - **RF-12:** El sistema debe permitir elegir una fecha de jubilación distinta de la propuesta.
 - **RF-13:** El sistema debe mostrar el mensaje "No pudimos cargar sus datos. Vuelva a ingresar al módulo." y deshabilitar el botón **Proyectar** si al ingresar al módulo no puede obtener el estado de la matrícula o las fechas mínimas de jubilación, incluso por una sesión vencida. En ese caso no se muestran las alertas de RF-05 y RF-11 ni el botón de RF-02, y no se ofrece un control propio para reintentar la carga.
 
@@ -52,7 +52,7 @@
 ## 5. Criterios de Aceptación
 
 - **AC-01 (RF-01):** Dado un afiliado con sesión iniciada en el sitio actual, cuando ingresa al módulo, entonces la pantalla muestra las fechas mínimas de Jubilación Ordinaria y Jubilación Parcial que devuelve el servicio backend actual para ese afiliado.
-- **AC-02 (RF-11, RF-02):** Dado un afiliado con las dos fechas mínimas iguales a hoy, cuando ingresa al módulo, entonces se muestra la alerta "Ud. se encuentra en condiciones de jubilarse", el botón **Proyectar** está deshabilitado y se muestra el botón "Inicie su trámite de jubilación aquí".
+- **AC-02 (RF-11, RF-02):** Dado un afiliado con las dos fechas mínimas iguales a hoy, cuando ingresa al módulo, entonces se muestra la alerta "Ud. se encuentra en condiciones de jubilarse", el botón **Proyectar** está habilitado y se muestra el botón "Inicie su trámite de jubilación aquí".
 - **AC-03 (RF-11, RF-02):** Dado un afiliado con las dos fechas mínimas anteriores a hoy, cuando ingresa al módulo, entonces se ve lo mismo que en AC-02.
 - **AC-04 (RF-02, RF-11):** Dado un afiliado con la fecha mínima de Jubilación Parcial igual a hoy y la de Jubilación Ordinaria igual a mañana, cuando ingresa al módulo, entonces se muestra el botón "Inicie su trámite de jubilación aquí", no se muestra la alerta "Ud. se encuentra en condiciones de jubilarse" y el botón **Proyectar** está habilitado.
 - **AC-05 (RF-02, RF-11):** Dado un afiliado con las dos fechas mínimas iguales a mañana, cuando ingresa al módulo, entonces no se muestran el botón de trámite ni la alerta, y el botón **Proyectar** está habilitado.

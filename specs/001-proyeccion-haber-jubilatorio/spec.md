@@ -11,6 +11,22 @@
 **PRD de origen**: `docs/PRD-001-proyeccion-haber-jubilatorio.md`. Cada requerimiento y escenario
 cita el ID del PRD que implementa.
 
+## Clarifications
+
+### Session 2026-11-08
+
+- Q: ¿De dónde van a salir los datos para medir en producción el tiempo de generación del reporte y
+  la cantidad de proyecciones por mes? → A: Medición manual con un conjunto de al menos 20 pruebas en
+  producción desde el navegador; aplica al tiempo de generación (SC-003), no a la cantidad de proyecciones.
+- Q: ¿De dónde va a salir la cantidad real de proyecciones generadas por mes durante marzo de 2027?
+  → A: De la misma fuente que la tabla de proyecciones por mes del PRD, descontando las pruebas
+  manuales.
+- Q: ¿Qué debe ver el afiliado si el reporte se generó bien pero el navegador bloquea la apertura del
+  PDF? → A: La pestaña se abre en el mismo momento del clic y el PDF se carga en ella cuando esté listo.
+- Q: ¿Cuál debe ser la fecha máxima que el afiliado pueda elegir en el selector? → A: Sin fecha máxima.
+- Q: ¿De dónde se toma la fecha de "hoy" para decidir las alertas, el botón de trámite y si se puede
+  proyectar? → A: Del reloj del dispositivo, convertido a la fecha calendario de Argentina.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Generar la proyección con los valores propuestos (Priority: P1)
@@ -94,8 +110,8 @@ verificar la fecha resultante y los días disponibles en el selector.
 ### User Story 3 - Afiliado en condiciones de jubilarse (Priority: P2)
 
 Un afiliado que ya alcanzó al menos una de las fechas mínimas ve el acceso para iniciar su trámite
-y, si alcanzó las dos, un aviso de que ya está en condiciones de jubilarse en lugar de poder
-proyectar.
+y, si alcanzó las dos, además un aviso de que ya está en condiciones de jubilarse. En todos los
+casos puede proyectar.
 
 **Why this priority**: orienta al afiliado próximo a jubilarse hacia el trámite, pero no afecta a
 quienes todavía no alcanzaron las fechas.
@@ -107,7 +123,7 @@ trámite y el estado de **Proyectar** en cada combinación.
 
 1. (AC-02) **Dado** un afiliado con las dos fechas mínimas iguales a hoy, **Cuando** ingresa al
    módulo, **Entonces** se muestra la alerta "Ud. se encuentra en condiciones de jubilarse", el
-   botón **Proyectar** está deshabilitado y se muestra el botón "Inicie su trámite de jubilación
+   botón **Proyectar** está habilitado y se muestra el botón "Inicie su trámite de jubilación
    aquí".
 2. (AC-03) **Dado** un afiliado con las dos fechas mínimas anteriores a hoy, **Cuando** ingresa al
    módulo, **Entonces** se ve lo mismo que en el escenario anterior.
@@ -171,14 +187,15 @@ tamaño de texto y áreas táctiles.
 3. (AC-24) **Dados** los 5 navegadores requeridos, **Cuando** se ejecutan los criterios AC-01 a
    AC-19, AC-25 y AC-26, **Entonces** todos pasan en los 5.
 4. (AC-20) **Dado** el período de medición en producción, **Cuando** se calcula el tiempo de
-   generación del reporte, **Entonces** el p95 es menor a 2 s.
+   generación del reporte con un conjunto de al menos 20 pruebas manuales desde el navegador, **Entonces** el p95
+   es menor a 2 s.
 
 ---
 
 ### Edge Cases
 
 - **Las dos fechas mínimas son iguales y ya pasaron**: se preselecciona Jubilación Ordinaria (RF-07)
-  y aplican la alerta y el bloqueo de RF-11.
+  y se muestra la alerta de RF-11, con **Proyectar** habilitado.
 - **Una fecha mínima ya pasó y la otra no**: **Proyectar** sigue habilitado y puede quedar elegida
   una fecha anterior a hoy (AC-08). En el selector, los días desde esa fecha mínima están
   habilitados aunque sean anteriores a hoy.
@@ -186,10 +203,10 @@ tamaño de texto y áreas táctiles.
 - **Doble clic en Proyectar**: no se envía una segunda solicitud (AC-17).
 - **La respuesta llega después de los 10 s**: se descarta, para que no se abra un PDF después de
   haber mostrado el error.
-- **El servicio rechaza una fecha lejana**: se aplica el mensaje de error de RF-10; el PRD no fija
-  una fecha máxima en el selector.
-- **El navegador bloquea la apertura del PDF**: se aplica el mensaje de error de RF-10 y **Proyectar**
-  vuelve a estar habilitado.
+- **El servicio rechaza una fecha lejana**: se aplica el mensaje de error de RF-10, ya que el
+  selector no tiene fecha máxima.
+- **El navegador impide abrir la pestaña incluso en el momento del clic**: se aplica el mensaje de
+  error de RF-10 y **Proyectar** vuelve a estar habilitado.
 - **La sesión vence antes de proyectar**: el servicio responde con error y se aplica RF-10.
 - **Falla la carga inicial de los datos o la sesión ya venció al ingresar**: se muestra el mensaje que
   pide volver a ingresar y **Proyectar** queda deshabilitado (FR-018).
@@ -210,7 +227,7 @@ tamaño de texto y áreas táctiles.
   beneficio.
 - **FR-004** (RF-04): El sistema MUST permitir elegir la fecha de jubilación solo desde un selector de
   fecha, sin ingreso manual, con los días anteriores a la fecha mínima del beneficio elegido
-  deshabilitados.
+  deshabilitados. El selector MUST NOT tener una fecha máxima.
 - **FR-005** (RF-05): Si el estado de la matrícula es "fallecido", el sistema MUST mostrar la alerta
   "No es posible realizar proyección para afiliados con estado matricular fallecido", deshabilitar
   **Proyectar**, no consultar ni evaluar las fechas mínimas y no mostrar la alerta de FR-011 ni el
@@ -221,14 +238,16 @@ tamaño de texto y áreas táctiles.
   esa fecha, aunque sea anterior a hoy. Si las dos fechas mínimas son iguales, MUST preseleccionar
   Jubilación Ordinaria.
 - **FR-008** (RF-08): El sistema MUST mostrar el reporte en PDF: en una nueva pestaña en navegadores
-  de escritorio, y en una nueva pestaña o en el visor de PDF del dispositivo en móviles.
+  de escritorio, y en una nueva pestaña o en el visor de PDF del dispositivo en móviles. La pestaña MUST abrirse en el
+  mismo momento del clic en **Proyectar** y el PDF MUST cargarse en ella cuando esté listo. Si el
+  servicio devuelve un error o no responde en el plazo de FR-010, esa pestaña MUST cerrarse.
 - **FR-009** (RF-09): El sistema MUST mostrar un indicador de carga y deshabilitar **Proyectar**
   mientras espera la respuesta del servicio de proyección.
 - **FR-010** (RF-10): Si el servicio de proyección devuelve un error o no responde en 10 s, el sistema
   MUST mostrar "No pudimos generar su proyección. Intente nuevamente." y volver a habilitar
   **Proyectar** para reintentar.
 - **FR-011** (RF-11): Si las dos fechas mínimas son menores o iguales a hoy, el sistema MUST mostrar
-  la alerta "Ud. se encuentra en condiciones de jubilarse" y deshabilitar **Proyectar**.
+  la alerta "Ud. se encuentra en condiciones de jubilarse" y mantener **Proyectar** habilitado.
 - **FR-012** (RF-12): Los afiliados MUST poder elegir una fecha de jubilación distinta de la propuesta.
 - **FR-013** (RNF-01): El tiempo de generación del reporte MUST ser menor a 2 s (p95), medido en
   producción desde que se solicita el reporte hasta que se recibe completo.
@@ -267,8 +286,10 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
 - **SC-001** (OBJ-01): La proyección se genera desde 1 sola pantalla (hoy son 2).
 - **SC-002** (OBJ-02): Con los valores propuestos, el reporte se genera con 1 clic (hoy son 2).
 - **SC-003** (OBJ-03, RNF-01): El 95 % de los reportes se genera en menos de 2 s (hoy, unos 4 s
-  medidos a mano).
-- **SC-004** (OBJ-04): Se generan al menos 11 proyecciones por mes (hoy, mediana de 5,5).
+  medidos a mano), según un conjunto de al menos 20 pruebas manuales en producción desde el
+  navegador.
+- **SC-004** (OBJ-04): Se generan al menos 11 proyecciones por mes (hoy, mediana de 5,5), según la
+  misma fuente de la línea base del PRD y sin contar las pruebas manuales.
 - **SC-005** (AC-15): En el 100 % de los casos comparados antes del release, el PDF contiene los mismos
   datos que el del sitio actual para el mismo afiliado, beneficio y fecha.
 - **SC-006** (AC-24): Antes del release, el 100 % de los criterios AC-01 a AC-19, AC-25 y AC-26
@@ -281,9 +302,10 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
 - La página de Solicitud de Jubilación es
   `https://www.cpbaonline.com.ar/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index` en producción
   y `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index` en QA.
-- **Hoy** es la fecha calendario en Argentina, aunque el dispositivo esté en otro huso horario.
+- **Hoy** es la fecha del reloj del dispositivo convertida a la fecha calendario de Argentina, aunque
+  el dispositivo esté en otro huso horario. Un dispositivo con el reloj mal configurado puede ver un
+  resultado incorrecto.
 - Los servicios actuales devuelven las dos fechas mínimas para todo afiliado no fallecido.
-- El selector de fecha no tiene un máximo, porque el PRD no lo define.
 - Con estado "fallecido" no hay fechas para mostrar, por lo que el beneficio y la fecha quedan sin
   valores y no se pueden operar.
 - Los valores marcados en el PRD como propuestos y a validar se toman como vigentes: los 10 s de
