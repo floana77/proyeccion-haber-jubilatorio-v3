@@ -90,7 +90,7 @@
 ---
 
 ## 7. Riesgos y Dependencias
-- Riesgo: los servicios backend actuales no están disponibles en los ambientes de desarrollo o QA → mitigación: creación de 2 mockups con datos personales del profesional, fechas mínimas de jubilación por tipo y reporte PDF de prueba, para usar solo en desarrollo y QA, nunca en producción.
+- Riesgo: los servicios backend actuales no están disponibles en los ambientes de desarrollo o QA → mitigación: creación de 2 mockups con datos personales del profesional, fechas mínimas de jubilación por tipo y reporte PDF de prueba, para usar solo en desarrollo y QA, nunca en producción. En la primera versión, los mockups se construyen dentro del desarrollo del frontend; esa versión sirve para construir y probar la pantalla y no sale a producción, porque para eso hay que conectar los servicios reales.
 - Riesgo: en algún navegador móvil el PDF queda solo como descarga, en vez de abrirse en una nueva pestaña o en el visor de PDF del dispositivo (RF-08) → mitigación: probar AC-16 en Chrome en Android y Safari en iOS antes del release.
 - Riesgo: los afiliados de 60 años o más cometen errores táctiles o no comprenden la pantalla → mitigación: cumplir RNF-04 y hacer una prueba de usabilidad con afiliados de 60 años o más antes del release.
 - Riesgo: los servicios backend actuales, que este proyecto no modifica, pueden no alcanzar el tiempo de < 2 s (p95) de RNF-01 y OBJ-03 (hoy se midieron a mano unos 4 s desde el clic hasta ver el PDF) → mitigación: sin plan definido por ahora.

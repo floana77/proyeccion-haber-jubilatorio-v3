@@ -21,9 +21,10 @@ npm run build -- -c qa
 
 **Resultado esperado**: `npm test` pasa y los dos builds terminan sin errores.
 
-## Escenarios en desarrollo
+## Escenarios en desarrollo y QA
 
-Con `npm start`, el gateway en memoria elige los datos con el parámetro `?escenario=` de la URL.
+Con `npm start` o `npm start -- -c qa`, el gateway en memoria elige los datos con el parámetro
+`?escenario=` de la URL.
 
 | Escenario | Datos | Se comprueba |
 |-----------|-------|--------------|
@@ -43,12 +44,16 @@ Con `npm start`, el gateway en memoria elige los datos con el parámetro `?escen
 
 ## Verificación de producción sin mocks
 
+Correr `npm run build` justo antes, porque el build de QA escribe en la misma carpeta y sí incluye
+los mocks.
+
 ```bash
-grep -i "postman" src/environments/environment.prod.ts
+grep -iE "postman|EnMemoria" src/environments/environment.prod.ts
 grep -rl "ProyeccionEnMemoria\|escenario" build_package
 ```
 
-**Resultado esperado**: ninguno de los dos comandos encuentra coincidencias.
+**Resultado esperado**: ninguno de los dos comandos encuentra coincidencias. La primera versión
+muestra el mensaje de RF-13 en este build, porque todavía no está conectada a los servicios reales.
 
 ## Verificación manual
 

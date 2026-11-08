@@ -5,7 +5,8 @@
 **Input**: Feature specification from `specs/001-proyeccion-haber-jubilatorio/spec.md`
 
 **Estado**: plan **provisional**. El diseño y la lógica quedan definidos; la integración con los
-servicios actuales está bloqueada por los puntos B1 a B3 de abajo.
+servicios actuales está bloqueada por los puntos B1 a B3 de abajo. La primera versión usa mocks
+dentro de la app en desarrollo y QA, y no sale a producción hasta conectar los servicios reales.
 
 ## Summary
 
@@ -48,7 +49,7 @@ y sin ellos el módulo no puede salir a producción.
 
 | ID | Dato faltante | Qué bloquea |
 |----|---------------|-------------|
-| B1 | Contratos de los servicios: datos del afiliado y estado de matrícula, fechas mínimas, generación del PDF | `ProyeccionHttpGateway`, mocks de Postman, QA y producción |
+| B1 | Contratos de los servicios: datos del afiliado y estado de matrícula, fechas mínimas, generación del PDF | `ProyeccionHttpGateway`, mocks de Postman y salida a producción |
 | B2 | Cómo se autentican hoy las llamadas (cookie o token) | Envío de la sesión desde `ProyeccionHttpGateway` |
 | B3 | URL y dominio donde se publica el módulo | `base href`, viabilidad de la sesión y de las llamadas entre dominios |
 
@@ -62,7 +63,7 @@ y sin ellos el módulo no puede salir a producción.
 | II. Test-First | `domain/` y `ProyeccionStore` concentran las reglas de RF-02, 03, 04, 05, 07, 09, 10, 11 y 13, con tests que fallan primero | Pasa | Pasa |
 | III. Sin secretos | Sin credenciales en el repo ni en el bundle; los `environment*.ts` tienen solo configuración no secreta. La sesión es del sitio actual | Pasa | Pasa |
 | IV. Solo servicios y sesión actuales | Sin endpoints nuevos, sin login y sin cambios en el cálculo o el PDF. El puerto solo describe consumo | Pasa | Pasa |
-| V. Mockups fuera de producción | El gateway en memoria solo se importa desde `environment.ts`; `environment.prod.ts` nunca lo referencia y `quickstart.md` lo verifica en el build | Pasa | Pasa |
+| V. Mockups fuera de producción | El gateway en memoria solo se importa desde `environment.ts` y `environment.qa.ts`; `environment.prod.ts` nunca lo referencia y `quickstart.md` lo verifica en el build | Pasa | Pasa |
 
 **Resultado**: sin violaciones. Los bloqueos B1 a B3 son datos faltantes, no incumplimientos.
 
@@ -90,7 +91,7 @@ config/
 src/
 ├── environments/
 │   ├── environment.ts        # dev: gateway en memoria
-│   ├── environment.qa.ts     # QA: servicio mock o de calidad
+│   ├── environment.qa.ts     # QA: gateway en memoria en la primera versión
 │   └── environment.prod.ts   # producción: nunca mocks
 └── app/
     └── proyeccion/

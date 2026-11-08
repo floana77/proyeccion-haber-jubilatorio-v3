@@ -25,8 +25,8 @@ Cada operación devuelve un resultado único de forma asincrónica y admite canc
 
 | Implementación | Ambiente | Estado |
 |----------------|----------|--------|
-| `ProyeccionEnMemoriaGateway` | Desarrollo | A construir; solo importada desde `environment.ts` |
-| `ProyeccionHttpGateway` | QA y producción | **Bloqueada por B1 y B2** |
+| `ProyeccionEnMemoriaGateway` | Desarrollo y QA, en la primera versión | A construir; solo importada desde `environment.ts` y `environment.qa.ts` |
+| `ProyeccionHttpGateway` | Producción; QA cuando reemplace a los mocks | **Bloqueada por B1 y B2**. Hasta entonces informa error en todas las operaciones |
 
 ## Datos pendientes para `ProyeccionHttpGateway`
 

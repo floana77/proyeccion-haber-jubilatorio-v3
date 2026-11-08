@@ -311,6 +311,8 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
 - Los valores marcados en el PRD como propuestos y a validar se toman como vigentes: los 10 s de
   RF-10 y los umbrales de RNF-01, RNF-03, RNF-04 y RNF-05.
 - La presentación sigue los diseños aprobados "Opción A — Tarjeta única guiada".
+- La primera versión usa mocks dentro del propio desarrollo, en los ambientes de desarrollo y QA, y no
+  sale a producción hasta conectar los servicios actuales.
 - **Dependencias**: login y sesión del sitio actual; servicios actuales de datos del afiliado, estado
   de matrícula, condición de jubilación, fechas mínimas y generación del PDF.
 - El sitio actual no muestra el acceso al módulo a los afiliados jubilados, por lo que este caso no se

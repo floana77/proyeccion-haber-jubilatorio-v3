@@ -9,10 +9,14 @@
 - **Alternatives considered**: suponer endpoints, descartado porque serían inventados; esperar los
   contratos, descartado por decisión de seguir con un plan provisional.
 
-## R2. Ejecutar en desarrollo sin servicios ni mocks de Postman
+## R2. Ejecutar en desarrollo y QA sin servicios ni mocks de Postman
 
-- **Decision**: un gateway en memoria que solo se importa desde `environment.ts`. Cada ambiente
-  elige su implementación a través de su archivo `environment*.ts`.
+- **Decision**: en la primera versión, un gateway en memoria que solo se importa desde
+  `environment.ts` y `environment.qa.ts`. Cada ambiente elige su implementación a través de su
+  archivo `environment*.ts`. Hasta resolver B1 y B2, `environment.prod.ts` usa un
+  `ProyeccionHttpGateway` que informa error en todas sus operaciones, para que el build de producción
+  compile sin datos simulados. Cuando lleguen los contratos, QA pasa a los servicios reales o a
+  Postman.
 - **Rationale**: como `environment.prod.ts` no lo importa, el gateway en memoria no entra al bundle
   de producción (principio V), sin agregar reemplazos de archivos fuera de los tres ambientes.
 - **Alternatives considered**: un flag booleano, descartado porque dejaría el código de prueba

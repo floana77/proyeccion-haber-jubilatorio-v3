@@ -10,7 +10,7 @@ Consume los servicios backend actuales y usa la sesión del sitio actual. Requer
 - Build: `@angular-builders/custom-webpack:browser` (webpack, no esbuild); config extra en `config/webpack.custom.js`. Salida en `./build_package`.
 - Tests unitarios: Karma ~6.4 + Jasmine ~5.2, en Chrome. Los `.feature` (Gherkin) no se ejecutan por ahora.
 - Ambientes: `src/environments/environment.ts` (dev), `environment.qa.ts` y `environment.prod.ts`, que se reemplazan por `fileReplacements`.
-- Mockups de desarrollo y QA: servidores mock de Postman (todavía no están creados). Sus URLs van solo en `environment.ts` o `environment.qa.ts`.
+- Mockups de desarrollo y QA: en la primera versión están dentro de la app (gateway en memoria) y solo se importan desde `environment.ts` y `environment.qa.ts`. Esa versión no sale a producción hasta conectar los servicios reales. Los servidores mock de Postman quedan para más adelante; sus URLs van solo en esos mismos archivos.
 
 ## Cómo correr
 ```bash
@@ -23,6 +23,6 @@ npm run build -- -c qa      # build de QA
 ```
 
 ## Qué NO hacer
-- No usar mockups ni datos de prueba en producción: `environment.prod.ts` nunca apunta a los servidores mock de Postman.
+- No usar mockups ni datos de prueba en producción: `environment.prod.ts` nunca importa los mocks internos ni apunta a los servidores mock de Postman.
 - No crear endpoints ni servicios backend, y no tocar el cálculo del haber ni el contenido o diseño del PDF: solo se consumen los servicios actuales.
 - No implementar login ni manejo de sesión propio: se usa la sesión del sitio actual.
