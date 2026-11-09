@@ -8,17 +8,33 @@ export const ALERTAS: Record<AlertaPantalla, string> = {
   condiciones: 'Ud. se encuentra en condiciones de jubilarse',
 };
 
-export const SEVERIDAD_ALERTA: Record<AlertaPantalla, 'error' | 'warn' | 'success'> = {
+export type VarianteAviso = 'error' | 'atencion';
+
+export const VARIANTE_ALERTA: Record<AlertaPantalla, VarianteAviso> = {
   errorCarga: 'error',
-  fallecido: 'warn',
-  condiciones: 'success',
+  fallecido: 'error',
+  condiciones: 'atencion',
 };
 
 export const TEXTO_TRAMITE = 'Inicie su trámite de jubilación aquí';
 
 export const ERROR_GENERACION = 'No pudimos generar su proyección. Intente nuevamente.';
 
-export const NOMBRE_BENEFICIO: Record<TipoBeneficio, string> = {
-  ordinaria: 'Jubilación Ordinaria',
-  parcial: 'Jubilación Parcial',
-};
+export const TITULO = 'Su proyección de haber jubilatorio';
+
+export const SUBTITULO = 'Elija el beneficio y la fecha para proyectar su haber jubilatorio.';
+
+export const ETIQUETA_DISPONIBLE = 'Ya disponible';
+
+export const OPCIONES_BENEFICIO: { valor: TipoBeneficio; nombre: string; descripcion: string }[] = [
+  {
+    valor: 'ordinaria',
+    nombre: 'Jubilación Ordinaria',
+    descripcion: 'El beneficio completo, a partir de su fecha mínima.',
+  },
+  {
+    valor: 'parcial',
+    nombre: 'Jubilación Parcial',
+    descripcion: 'Combina actividad reducida con un haber proporcional.',
+  },
+];

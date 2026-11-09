@@ -64,12 +64,15 @@
 
 ## R7. Componentes de PrimeNG
 
-- **Decision**: `p-calendar` con `readonlyInput` y `minDate` y sin `maxDate` (RF-04); `p-selectButton`
-  para el beneficio; `p-message` para alertas y errores. Los tamaños de RNF-04 se aplican con estilos
+- **Decision**: `p-calendar` con `readonlyInput` y `minDate` y sin `maxDate` (RF-04); dos
+  opciones apiladas con radios nativos para el beneficio; avisos propios para alertas y errores, con
+  los colores del diseño aprobado. Tipografías Lora y Work Sans alojadas en el propio build, sin
+  llamadas a servicios externos. Los tamaños de RNF-04 se aplican con estilos
   propios sobre los de PrimeNG.
 - **Rationale**: `readonlyInput` impide escribir la fecha (AC-12) y los componentes están en el stack.
 - **Alternatives considered**: `p-dropdown` para el beneficio, descartado porque exige un clic más
-  para ver las dos opciones y aleja el flujo de RNF-02.
+  para ver las dos opciones y aleja el flujo de RNF-02; `p-selectButton`, reemplazado porque el diseño
+  aprobado muestra la fecha mínima dentro de cada opción.
 
 ## R8. Sesión del sitio actual
 

@@ -3,6 +3,27 @@
 @import 'primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
 
+// Tipografías del diseño aprobado, alojadas en el propio build.
+@font-face {
+  font-family: Lora;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./assets/fonts/lora-600-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./assets/fonts/work-sans-latin.woff2') format('woff2');
+}
+
+:root {
+  --font-family: 'Work Sans', system-ui, sans-serif;
+}
+
 // Texto base de 18 px (RNF-04). PrimeNG y PrimeFlex escalan a partir de este valor.
 html {
   font-size: 18px;

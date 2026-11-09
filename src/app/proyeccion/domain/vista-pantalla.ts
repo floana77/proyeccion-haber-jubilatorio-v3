@@ -1,4 +1,4 @@
-import { FechaIso, FechasMinimas } from './tipos';
+import { FechaIso, FechasMinimas, TipoBeneficio } from './tipos';
 
 export type EstadoCarga = 'cargando' | 'lista' | 'fallecido' | 'errorCarga';
 export type EstadoGeneracion = 'inactiva' | 'generando' | 'error';
@@ -13,6 +13,8 @@ export interface EntradaVista {
 
 export interface VistaPantalla {
   alerta: AlertaPantalla | null;
+  mostrarFormulario: boolean;
+  beneficioDisponible: TipoBeneficio | null;
   mostrarTramite: boolean;
   proyectarHabilitado: boolean;
   mostrarIndicador: boolean;
@@ -25,11 +27,31 @@ export function calcularVista({ carga, generacion, fechas, hoy }: EntradaVista):
 
   return {
     alerta: calcularAlerta(carga, cumplidas),
+    mostrarFormulario: carga !== 'fallecido',
+    beneficioDisponible: carga === 'lista' ? calcularBeneficioDisponible(fechas, hoy) : null,
     mostrarTramite: carga === 'lista' && cumplidas >= 1,
     proyectarHabilitado: carga === 'lista' && generacion !== 'generando',
     mostrarIndicador: carga === 'cargando' || generacion === 'generando',
     mostrarErrorGeneracion: generacion === 'error',
   };
+}
+
+/** RF-14: el beneficio cumplido, solo si se cumplió uno de los dos. */
+function calcularBeneficioDisponible(
+  fechas: FechasMinimas | null,
+  hoy: FechaIso,
+): TipoBeneficio | null {
+  if (!fechas) {
+    return null;
+  }
+
+  const ordinariaCumplida = fechas.ordinaria <= hoy;
+
+  if (ordinariaCumplida === fechas.parcial <= hoy) {
+    return null;
+  }
+
+  return ordinariaCumplida ? 'ordinaria' : 'parcial';
 }
 
 function calcularAlerta(carga: EstadoCarga, cumplidas: number): AlertaPantalla | null {

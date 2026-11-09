@@ -174,7 +174,7 @@ Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 - [X] T054 [US5] Agregar etiquetas accesibles a selectores, indicador y alertas en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
 - [ ] T055 [US5] (manual: la realiza una persona) Crear specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md y registrar ahí la verificación de AC-22 en 360×640, 768×1024, 1024×768 y 1920×1080
 - [ ] T056 [US5] (manual: la realiza una persona) Auditar con axe y medir los elementos (AC-23), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
-- [ ] T057 [US5] (manual: la realiza una persona) Ejecutar en los 5 navegadores AC-02 a AC-14, AC-17 a AC-19, AC-21 y AC-25 a AC-28 con mocks, en los navegadores a los que aplican (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
+- [ ] T057 [US5] (manual: la realiza una persona) Ejecutar en los 5 navegadores AC-02 a AC-14, AC-17 a AC-19, AC-21 y AC-25 a AC-30 con mocks, en los navegadores a los que aplican (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
 - [ ] T058 [US5] (manual: la realiza una persona) Comprobar en Chrome Android y Safari iOS con dispositivos reales que el PDF se abre y no queda solo como descarga (AC-16), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
 - [ ] T059 [US5] (manual: la realiza una persona) Realizar la prueba de usabilidad con afiliados de 60 años o más (SC-007), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
 
@@ -209,6 +209,20 @@ Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 - [ ] T069 (manual: la realiza una persona) Verificar en QA AC-01 con datos reales y AC-25 y RF-10 con sesión vencida en los 5 navegadores, y AC-15 y SC-005 contra el sitio actual en los 3 de escritorio (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por B1, B2 y B3)
 - [ ] T070 (manual: la realiza una persona) Medir en producción, del 01/03/2027 al 31/03/2027, SC-001, SC-002, AC-20 y SC-003 con al menos 20 pruebas manuales desde el navegador, con el p95 por rango más cercano, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (bloqueada por T066 y T067; requiere la salida a producción)
 - [ ] T071 (manual: la realiza una persona) Medir SC-004 del 01/03/2027 al 31/03/2027 con la misma fuente de la tabla del PRD, sin contar las pruebas manuales, registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md (requiere la salida a producción)
+
+---
+
+## Phase 10: Rediseño según el diseño aprobado
+
+**Purpose**: Aplicar las pantallas del canvas de la Opción A. Depende de la Fase 8 y no de la Fase 9
+
+- [X] T072 Actualizar PRD (RF-05, AC-13, RF-14, AC-29, AC-30) y derivar los cambios a spec.md, data-model.md, contracts/pantalla-proyeccion.md, research.md y quickstart.md
+- [X] T073 Agregar a src/app/proyeccion/domain/vista-pantalla.spec.ts tests que fallen: `mostrarFormulario` falso con `fallecido` (AC-13) y `beneficioDisponible` (AC-29, AC-30)
+- [X] T074 Actualizar src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts con tests que fallen: opciones de beneficio con radios, fallecido sin formulario (AC-13), etiqueta "Ya disponible" (AC-29, AC-30) y título, subtítulo y descripciones literales
+- [X] T075 Implementar `mostrarFormulario` y `beneficioDisponible` en src/app/proyeccion/domain/vista-pantalla.ts
+- [X] T076 Aplicar el diseño en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html, proyeccion-page.component.ts, proyeccion-page.component.scss y textos.ts
+- [X] T077 Alojar las tipografías Lora y Work Sans en src/assets/fonts/ y declararlas en src/styles.scss
+- [X] T078 Comprobar en Chrome los escenarios de quickstart.md y RNF-03 y RNF-04 en los cuatro tamaños de AC-22
 
 ---
 
@@ -289,4 +303,4 @@ Task: "Pestaña en src/app/proyeccion/platform/pestana-reporte.service.ts"
 - Cada commit incluye el test y su implementación, con `npm test` en verde
 - La palabra `escenario` y la clase `ProyeccionEnMemoriaGateway` no pueden llegar al build de producción
 - No inventar endpoints ni formatos: la Fase 9 espera los contratos reales
-- Fuera de estas tareas: revisar el diseño aprobado si muestra **Proyectar** deshabilitado con las dos fechas cumplidas, y avisar del cambio de RF-11 a la Gerencia de Seguridad Social
+- Fuera de estas tareas: avisar del cambio de RF-11 a la Gerencia de Seguridad Social

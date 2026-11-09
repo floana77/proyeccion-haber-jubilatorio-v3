@@ -145,6 +145,12 @@ trámite y el estado de **Proyectar** en cada combinación.
 5. (AC-26) **Dado** un afiliado que ve el botón "Inicie su trámite de jubilación aquí", **Cuando**
    hace clic en él, **Entonces** en la misma pestaña se abre la página de Solicitud de Jubilación del
    sitio actual que corresponde al ambiente.
+6. (AC-29) **Dado** un afiliado con la fecha mínima de Jubilación Parcial igual a hoy y la de
+   Jubilación Ordinaria igual a mañana, **Cuando** ingresa al módulo, **Entonces** se muestra la
+   etiqueta "Ya disponible" en Jubilación Parcial y no en Jubilación Ordinaria.
+7. (AC-30) **Dado** un afiliado con las dos fechas mínimas menores o iguales a hoy, o con las dos
+   posteriores a hoy, **Cuando** ingresa al módulo, **Entonces** no se muestra la etiqueta "Ya
+   disponible".
 
 ---
 
@@ -163,7 +169,8 @@ el estado de **Proyectar**.
 
 1. (AC-13) **Dado** un afiliado con estado de matrícula "fallecido", **Cuando** ingresa al módulo,
    **Entonces** se muestra la alerta "No es posible realizar proyección para afiliados con estado
-   matricular fallecido", el botón **Proyectar** está deshabilitado y, aunque sus dos fechas mínimas
+   matricular fallecido", no se muestran el selector de beneficio, el selector de fecha ni el botón
+   **Proyectar** y, aunque sus dos fechas mínimas
    sean anteriores a hoy, no se muestran la alerta "Ud. se encuentra en condiciones de jubilarse" ni
    el botón "Inicie su trámite de jubilación aquí".
 2. (AC-14) **Dado** un afiliado con estado "activa", "cancelado" o "suspendido" (una prueba por
@@ -193,7 +200,7 @@ tamaño de texto y áreas táctiles.
    elementos, **Entonces** el contraste es ≥ 4,5:1 en el texto normal y ≥ 3:1 en el texto grande, el
    texto base mide ≥ 18 px, las áreas táctiles miden ≥ 44×44 px y están separadas por ≥ 8 px.
 3. (AC-24) **Dados** los 5 navegadores requeridos, **Cuando** se ejecutan los criterios AC-01 a
-   AC-19 y AC-25 a AC-28, **Entonces** todos pasan en los navegadores a los que aplican: AC-15 en los
+   AC-19 y AC-25 a AC-30, **Entonces** todos pasan en los navegadores a los que aplican: AC-15 en los
    3 de escritorio, AC-16 en los 2 de celular y el resto en los 5.
 4. (AC-20) **Dado** el período de medición en producción, **Cuando** se calcula el tiempo de
    generación del reporte con un conjunto de al menos 20 pruebas manuales desde el navegador, **Entonces** el p95
@@ -239,8 +246,8 @@ tamaño de texto y áreas táctiles.
   fecha, sin ingreso manual, con los días anteriores a la fecha mínima del beneficio elegido
   deshabilitados. El selector MUST NOT tener una fecha máxima.
 - **FR-005** (RF-05): Si el estado de la matrícula es "fallecido", el sistema MUST mostrar la alerta
-  "No es posible realizar proyección para afiliados con estado matricular fallecido", deshabilitar
-  **Proyectar**, no consultar ni evaluar las fechas mínimas y no mostrar la alerta de FR-011 ni el
+  "No es posible realizar proyección para afiliados con estado matricular fallecido", no mostrar el
+  selector de beneficio, el selector de fecha ni **Proyectar**, no consultar ni evaluar las fechas mínimas y no mostrar la alerta de FR-011 ni el
   botón de FR-002. Los estados "activa", "cancelado" y "suspendido" MUST permitir proyectar.
 - **FR-006** (RF-06): El sistema MUST mostrar el botón **Proyectar**, que genera el reporte con el
   tipo de beneficio y la fecha elegidos.
@@ -278,6 +285,9 @@ tamaño de texto y áreas táctiles.
   botón de FR-002. El sistema MUST NOT ofrecer un control propio para reintentar la carga. Mientras se
   cargan los datos, el sistema MUST mostrar un indicador de carga y deshabilitar **Proyectar**.
 
+- **FR-019** (RF-14): El sistema MUST mostrar la etiqueta "Ya disponible" en el tipo de beneficio cuya
+  fecha mínima es menor o igual a hoy, solo cuando se cumple para uno de los dos beneficios.
+
 ### Key Entities *(include if feature involves data)*
 
 - **Afiliado**: profesional de CPBA con sesión en el sitio actual. Tiene un estado de matrícula:
@@ -305,7 +315,7 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
   misma fuente de la línea base del PRD y sin contar las pruebas manuales.
 - **SC-005** (AC-15): En el 100 % de los casos comparados antes del release, el PDF contiene los mismos
   datos que el del sitio actual para el mismo afiliado, beneficio y fecha.
-- **SC-006** (AC-24): Antes del release, el 100 % de los criterios AC-01 a AC-19 y AC-25 a AC-28
+- **SC-006** (AC-24): Antes del release, el 100 % de los criterios AC-01 a AC-19 y AC-25 a AC-30
   pasa en los navegadores a los que aplica, según AC-24.
 - **SC-007** (riesgo del PRD): Antes del release se completa una prueba de usabilidad con afiliados de
   60 años o más.
@@ -319,11 +329,13 @@ Salvo indicación, se miden en producción durante el período del 01/03/2027 al
   el dispositivo esté en otro huso horario. Un dispositivo con el reloj mal configurado puede ver un
   resultado incorrecto.
 - Los servicios actuales devuelven las dos fechas mínimas para todo afiliado no fallecido.
-- Con estado "fallecido" no hay fechas para mostrar, por lo que el beneficio y la fecha quedan sin
-  valores y no se pueden operar.
+- Con estado "fallecido" no hay fechas para mostrar, por lo que la pantalla solo muestra el título y la
+  alerta.
 - Los valores marcados en el PRD como propuestos y a validar se toman como vigentes: los 10 s de
   RF-10 y los umbrales de RNF-01, RNF-03, RNF-04 y RNF-05.
-- La presentación sigue los diseños aprobados "Opción A — Tarjeta única guiada".
+- La presentación sigue los diseños aprobados "Opción A — Tarjeta única guiada". Donde difieren,
+  prevalece el PRD: los textos literales y el trato de "Ud.", la fecha solo desde el selector y la
+  regla del botón de trámite.
 - La primera versión usa mocks dentro del propio desarrollo, en los ambientes de desarrollo y QA, y no
   sale a producción hasta conectar los servicios actuales.
 - **Dependencias**: login y sesión del sitio actual; servicios actuales de datos del afiliado, estado

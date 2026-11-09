@@ -35,10 +35,13 @@ porque el módulo no puede decidir qué mostrar.
 |-----------|--------|------------------|-----------|
 | Cargando | Ninguna | No | Deshabilitado |
 | Falla de carga | Mensaje de RF-13 | No | Deshabilitado |
-| `fallecido`, con cualquier fecha | Alerta de RF-05 | No | Deshabilitado |
+| `fallecido`, con cualquier fecha | Alerta de RF-05 | No | No se muestra, igual que los selectores |
 | Las dos fechas cumplidas | Alerta de RF-11 | Sí | Habilitado |
 | Solo una fecha cumplida | Ninguna | Sí | Habilitado |
 | Ninguna fecha cumplida | Ninguna | No | Habilitado |
+
+La etiqueta "Ya disponible" (RF-14) aparece en el beneficio cumplido solo en la fila "Solo una fecha
+cumplida".
 
 Durante `cargando` se ve el indicador de carga (RF-13). Durante `generando`, **Proyectar** está siempre
 deshabilitado (RF-09).

@@ -1,35 +1,29 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SelectButtonModule } from 'primeng/selectbutton';
 
 import { environment } from '../../../../environments/environment';
-import { TipoBeneficio } from '../../domain/tipos';
 import { Navegacion } from '../../platform/navegacion.service';
 import { ProyeccionStore } from '../../state/proyeccion.store';
 import { dateAFecha, fechaADate, fechaParaMostrar } from '../fecha-calendario';
 import {
   ALERTAS,
   ERROR_GENERACION,
-  NOMBRE_BENEFICIO,
-  SEVERIDAD_ALERTA,
+  ETIQUETA_DISPONIBLE,
+  OPCIONES_BENEFICIO,
+  SUBTITULO,
   TEXTO_TRAMITE,
+  TITULO,
+  VARIANTE_ALERTA,
 } from './textos';
 
 @Component({
   selector: 'app-proyeccion-page',
   standalone: true,
-  imports: [
-    FormsModule,
-    ButtonModule,
-    CalendarModule,
-    MessageModule,
-    ProgressSpinnerModule,
-    SelectButtonModule,
-  ],
+  imports: [NgTemplateOutlet, FormsModule, ButtonModule, CalendarModule, ProgressSpinnerModule],
   providers: [ProyeccionStore],
   templateUrl: './proyeccion-page.component.html',
   styleUrl: './proyeccion-page.component.scss',
@@ -41,15 +35,14 @@ export class ProyeccionPageComponent implements OnInit {
   protected readonly vista = this.store.vista;
 
   protected readonly alertas = ALERTAS;
-  protected readonly severidades = SEVERIDAD_ALERTA;
+  protected readonly variantes = VARIANTE_ALERTA;
   protected readonly errorGeneracion = ERROR_GENERACION;
   protected readonly textoTramite = TEXTO_TRAMITE;
-  protected readonly nombres = NOMBRE_BENEFICIO;
+  protected readonly titulo = TITULO;
+  protected readonly subtitulo = SUBTITULO;
+  protected readonly etiquetaDisponible = ETIQUETA_DISPONIBLE;
+  protected readonly opciones = OPCIONES_BENEFICIO;
   protected readonly mostrarFecha = fechaParaMostrar;
-  protected readonly opcionesBeneficio: { etiqueta: string; valor: TipoBeneficio }[] = [
-    { etiqueta: NOMBRE_BENEFICIO.ordinaria, valor: 'ordinaria' },
-    { etiqueta: NOMBRE_BENEFICIO.parcial, valor: 'parcial' },
-  ];
 
   protected readonly controlesDeshabilitados = computed(() => this.store.seleccion() === null);
 

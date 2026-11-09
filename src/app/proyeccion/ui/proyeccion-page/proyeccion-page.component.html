@@ -1,93 +1,141 @@
+<ng-template #aviso let-texto let-variante="variante" let-id="id">
+  <div role="alert" class="aviso" [class.aviso-error]="variante === 'error'" [attr.data-testid]="id">
+    <span class="aviso-icono" aria-hidden="true">
+      @if (variante === 'error') {
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2" />
+          <path d="M12 11v5.2" stroke="#fff" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="12" cy="7.8" r="1.1" fill="#fff" />
+        </svg>
+      } @else {
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M10.6 3.6L2.2 18.2a1.6 1.6 0 0 0 1.4 2.4h16.8a1.6 1.6 0 0 0 1.4-2.4L13.4 3.6a1.6 1.6 0 0 0-2.8 0z"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          <path d="M12 9.5v4.2" stroke="#fff" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="12" cy="17" r="1.1" fill="#fff" />
+        </svg>
+      }
+    </span>
+    <span class="aviso-texto">{{ texto }}</span>
+  </div>
+</ng-template>
+
 <main class="proyeccion">
   <section class="tarjeta" aria-labelledby="titulo-proyeccion">
-    <h1 id="titulo-proyeccion">Proyección de haber jubilatorio</h1>
-
-    @if (vista().alerta; as alerta) {
-      <div role="alert">
-        <p-message data-testid="alerta" [severity]="severidades[alerta]" [text]="alertas[alerta]" />
-      </div>
-    }
-
-    @if (store.fechas(); as fechas) {
-      <div class="panel">
-        <h2 class="panel-titulo">Fechas mínimas de jubilación</h2>
-        <dl>
-          <div class="fila">
-            <dt>{{ nombres.ordinaria }}</dt>
-            <dd data-testid="fecha-minima-ordinaria">{{ mostrarFecha(fechas.ordinaria) }}</dd>
-          </div>
-          <div class="fila">
-            <dt>{{ nombres.parcial }}</dt>
-            <dd data-testid="fecha-minima-parcial">{{ mostrarFecha(fechas.parcial) }}</dd>
-          </div>
-        </dl>
-      </div>
-    }
-
-    <div class="campo">
-      <span id="etiqueta-beneficio" class="etiqueta">Tipo de beneficio</span>
-      <p-selectButton
-        data-testid="beneficio-elegido"
-        ariaLabelledBy="etiqueta-beneficio"
-        [options]="opcionesBeneficio"
-        optionLabel="etiqueta"
-        optionValue="valor"
-        [allowEmpty]="false"
-        [disabled]="controlesDeshabilitados()"
-        [ngModel]="store.seleccion()?.beneficio ?? null"
-        (ngModelChange)="store.cambiarBeneficio($event)"
-      />
-    </div>
-
-    <div class="campo">
-      <label for="fecha-jubilacion" class="etiqueta">Fecha de jubilación</label>
-      <p-calendar
-        data-testid="fecha-elegida"
-        inputId="fecha-jubilacion"
-        dateFormat="dd/mm/yy"
-        [firstDayOfWeek]="1"
-        [readonlyInput]="true"
-        [minDate]="fechaMinimaCalendario()"
-        [disabled]="controlesDeshabilitados()"
-        [ngModel]="fechaCalendario()"
-        (ngModelChange)="elegirFecha($event)"
-      />
-      @if (store.fechaMinimaElegida(); as minima) {
-        <p class="ayuda">No puede ser anterior al {{ mostrarFecha(minima) }}.</p>
+    <div class="encabezado">
+      <h1 id="titulo-proyeccion">{{ titulo }}</h1>
+      @if (vista().mostrarFormulario) {
+        <p class="subtitulo solo-pantalla-grande">{{ subtitulo }}</p>
       }
     </div>
 
-    @if (vista().mostrarErrorGeneracion) {
-      <div role="alert">
-        <p-message data-testid="error-generacion" severity="error" [text]="errorGeneracion" />
-      </div>
+    @if (vista().alerta; as alerta) {
+      <ng-container
+        [ngTemplateOutlet]="aviso"
+        [ngTemplateOutletContext]="{ $implicit: alertas[alerta], variante: variantes[alerta], id: 'alerta' }"
+      />
     }
 
-    @if (vista().mostrarIndicador) {
-      <div data-testid="indicador-carga" class="indicador" role="status" aria-label="Cargando">
-        <p-progressSpinner styleClass="spinner" strokeWidth="6" ariaLabel="Cargando" />
+    @if (vista().mostrarFormulario) {
+      <fieldset class="beneficios">
+        <legend class="etiqueta">Tipo de beneficio</legend>
+
+        @for (opcion of opciones; track opcion.valor) {
+          <label class="opcion" [class.opcion-elegida]="store.seleccion()?.beneficio === opcion.valor">
+            <input
+              type="radio"
+              name="beneficio"
+              [attr.data-testid]="'opcion-' + opcion.valor"
+              [value]="opcion.valor"
+              [checked]="store.seleccion()?.beneficio === opcion.valor"
+              [disabled]="controlesDeshabilitados()"
+              (change)="store.cambiarBeneficio(opcion.valor)"
+            />
+            <span class="opcion-cuerpo">
+              <span class="opcion-titulo">
+                <span class="opcion-nombre">{{ opcion.nombre }}</span>
+                @if (vista().beneficioDisponible === opcion.valor) {
+                  <span class="disponible" [attr.data-testid]="'disponible-' + opcion.valor">
+                    {{ etiquetaDisponible }}
+                  </span>
+                }
+              </span>
+              <span class="opcion-descripcion solo-pantalla-grande">{{ opcion.descripcion }}</span>
+              @if (store.fechas(); as fechas) {
+                <span class="opcion-descripcion">
+                  Fecha mínima:
+                  <strong [attr.data-testid]="'fecha-minima-' + opcion.valor">
+                    {{ mostrarFecha(fechas[opcion.valor]) }}
+                  </strong>
+                </span>
+              }
+            </span>
+          </label>
+        }
+      </fieldset>
+
+      <div class="campo">
+        <label for="fecha-jubilacion" class="etiqueta">Fecha para su proyección</label>
+        <p-calendar
+          data-testid="fecha-elegida"
+          inputId="fecha-jubilacion"
+          dateFormat="dd/mm/yy"
+          iconAriaLabel="Elegir fecha en el calendario"
+          [showIcon]="true"
+          [firstDayOfWeek]="1"
+          [readonlyInput]="true"
+          [minDate]="fechaMinimaCalendario()"
+          [disabled]="controlesDeshabilitados()"
+          [ngModel]="fechaCalendario()"
+          (ngModelChange)="elegirFecha($event)"
+        />
+        @if (store.fechaMinimaElegida(); as minima) {
+          <p class="ayuda">No puede ser anterior al {{ mostrarFecha(minima) }} para el beneficio elegido.</p>
+        }
       </div>
-    }
 
-    <button
-      pButton
-      type="button"
-      class="accion accion-principal"
-      data-testid="proyectar"
-      label="Proyectar"
-      [disabled]="!vista().proyectarHabilitado"
-      (click)="store.proyectar()"
-    ></button>
+      @if (vista().mostrarErrorGeneracion) {
+        <ng-container
+          [ngTemplateOutlet]="aviso"
+          [ngTemplateOutletContext]="{ $implicit: errorGeneracion, variante: 'error', id: 'error-generacion' }"
+        />
+      }
 
-    @if (vista().mostrarTramite) {
+      @if (vista().mostrarIndicador) {
+        <div data-testid="indicador-carga" class="indicador" role="status" aria-label="Cargando">
+          <p-progressSpinner styleClass="spinner" strokeWidth="6" ariaLabel="Cargando" />
+        </div>
+      }
+
       <button
         pButton
         type="button"
-        class="p-button-outlined accion"
-        data-testid="tramite"
-        [label]="textoTramite"
-        (click)="iniciarTramite()"
+        class="proyectar"
+        data-testid="proyectar"
+        icon="pi pi-download"
+        label="Proyectar"
+        [disabled]="!vista().proyectarHabilitado"
+        (click)="store.proyectar()"
       ></button>
+
+      @if (vista().mostrarTramite) {
+        <button type="button" class="tramite" data-testid="tramite" (click)="iniciarTramite()">
+          {{ textoTramite }}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M5 12h14m0 0l-6-6m6 6l-6 6"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      }
     }
   </section>
 </main>

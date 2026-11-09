@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Calendar } from 'primeng/calendar';
-import { SelectButton } from 'primeng/selectbutton';
 import { Subject, of, throwError } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import { ProyeccionGateway } from '../../data/proyeccion.gateway';
-import { EstadoMatricula, FechasMinimas, ReportePdf } from '../../domain/tipos';
+import { EstadoMatricula, FechasMinimas, ReportePdf, TipoBeneficio } from '../../domain/tipos';
 import { Navegacion } from '../../platform/navegacion.service';
 import { PestanaReporte } from '../../platform/pestana-reporte.service';
 import { RelojArgentina } from '../../platform/reloj-argentina.service';
@@ -55,8 +54,8 @@ describe('ProyeccionPageComponent', () => {
     fixture.detectChanges();
   }
 
-  function selectorBeneficio(): SelectButton {
-    return fixture.debugElement.query(By.directive(SelectButton)).componentInstance;
+  function opcion(beneficio: TipoBeneficio): HTMLInputElement {
+    return elemento(`opcion-${beneficio}`) as HTMLInputElement;
   }
 
   function calendario(): Calendar {
@@ -89,7 +88,8 @@ describe('ProyeccionPageComponent', () => {
   it('muestra el beneficio y la fecha propuestos', async () => {
     await renderizarEstable();
 
-    expect(selectorBeneficio().value).toBe('parcial');
+    expect(opcion('parcial').checked).toBeTrue();
+    expect(opcion('ordinaria').checked).toBeFalse();
     expect(entradaFecha().value).toBe('15/03/2030');
   });
 
@@ -141,7 +141,7 @@ describe('ProyeccionPageComponent', () => {
 
     expect(textoCompleto()).toContain(ERROR_RF13);
     expect(botonProyectar().disabled).toBeTrue();
-    expect(fixture.nativeElement.querySelectorAll('button').length).toBe(1);
+    expect(fixture.nativeElement.querySelectorAll('button:not(.p-datepicker-trigger)').length).toBe(1);
   });
 
   describe('selector de beneficio y de fecha', () => {
@@ -167,9 +167,7 @@ describe('ProyeccionPageComponent', () => {
     it('AC-09: al cambiar el beneficio muestra la mínima del nuevo y actualiza el límite', async () => {
       await renderizarEstable();
 
-      fixture.debugElement
-        .query(By.directive(SelectButton))
-        .triggerEventHandler('ngModelChange', 'ordinaria');
+      opcion('ordinaria').click();
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
@@ -234,6 +232,50 @@ describe('ProyeccionPageComponent', () => {
     });
   });
 
+  describe('etiqueta "Ya disponible"', () => {
+    it('AC-29: aparece solo en el beneficio cumplido', () => {
+      gateway.obtenerFechasMinimas.and.returnValue(
+        of({ ordinaria: '2026-11-09', parcial: '2026-11-08' }),
+      );
+      renderizar();
+
+      expect(elemento('disponible-parcial')?.textContent).toContain('Ya disponible');
+      expect(elemento('disponible-ordinaria')).toBeNull();
+    });
+
+    it('AC-30: no aparece con las dos fechas cumplidas', () => {
+      gateway.obtenerFechasMinimas.and.returnValue(
+        of({ ordinaria: '2026-11-08', parcial: '2026-11-08' }),
+      );
+      renderizar();
+
+      expect(elemento('disponible-parcial')).toBeNull();
+      expect(elemento('disponible-ordinaria')).toBeNull();
+    });
+  });
+
+  describe('textos del diseño', () => {
+    beforeEach(() => renderizar());
+
+    [
+      'Su proyección de haber jubilatorio',
+      'Elija el beneficio y la fecha para proyectar su haber jubilatorio.',
+      'El beneficio completo, a partir de su fecha mínima.',
+      'Combina actividad reducida con un haber proporcional.',
+      'Fecha para su proyección',
+    ].forEach((texto) => {
+      it(`muestra "${texto}"`, () => {
+        expect(textoCompleto()).toContain(texto);
+      });
+    });
+
+    it('la ayuda indica la fecha mínima del beneficio elegido', () => {
+      expect(textoCompleto()).toContain(
+        'No puede ser anterior al 15/03/2030 para el beneficio elegido.',
+      );
+    });
+  });
+
   describe('afiliado fallecido', () => {
     const FALLECIDO =
       'No es posible realizar proyección para afiliados con estado matricular fallecido';
@@ -243,17 +285,16 @@ describe('ProyeccionPageComponent', () => {
       await renderizarEstable();
     });
 
-    it('AC-13: muestra el texto literal de RF-05 y deshabilita Proyectar', () => {
+    it('AC-13: muestra el texto literal de RF-05, sin trámite', () => {
       expect(elemento('alerta')?.textContent).toContain(FALLECIDO);
-      expect(botonProyectar().disabled).toBeTrue();
       expect(elemento('tramite')).toBeNull();
     });
 
-    it('beneficio y fecha quedan sin valores y no se pueden operar', () => {
-      expect(selectorBeneficio().value).toBeNull();
-      expect(selectorBeneficio().disabled).toBeTrue();
-      expect(entradaFecha().value).toBe('');
-      expect(calendario().disabled).toBeTrue();
+    it('AC-13: no muestra los selectores ni Proyectar', () => {
+      expect(elemento('opcion-ordinaria')).toBeNull();
+      expect(elemento('opcion-parcial')).toBeNull();
+      expect(elemento('fecha-elegida')).toBeNull();
+      expect(elemento('proyectar')).toBeNull();
     });
   });
 });
