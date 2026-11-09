@@ -1,0 +1,93 @@
+<main class="proyeccion">
+  <section class="tarjeta" aria-labelledby="titulo-proyeccion">
+    <h1 id="titulo-proyeccion">Proyección de haber jubilatorio</h1>
+
+    @if (vista().alerta; as alerta) {
+      <div role="alert">
+        <p-message data-testid="alerta" [severity]="severidades[alerta]" [text]="alertas[alerta]" />
+      </div>
+    }
+
+    @if (store.fechas(); as fechas) {
+      <div class="panel">
+        <h2 class="panel-titulo">Fechas mínimas de jubilación</h2>
+        <dl>
+          <div class="fila">
+            <dt>{{ nombres.ordinaria }}</dt>
+            <dd data-testid="fecha-minima-ordinaria">{{ mostrarFecha(fechas.ordinaria) }}</dd>
+          </div>
+          <div class="fila">
+            <dt>{{ nombres.parcial }}</dt>
+            <dd data-testid="fecha-minima-parcial">{{ mostrarFecha(fechas.parcial) }}</dd>
+          </div>
+        </dl>
+      </div>
+    }
+
+    <div class="campo">
+      <span id="etiqueta-beneficio" class="etiqueta">Tipo de beneficio</span>
+      <p-selectButton
+        data-testid="beneficio-elegido"
+        ariaLabelledBy="etiqueta-beneficio"
+        [options]="opcionesBeneficio"
+        optionLabel="etiqueta"
+        optionValue="valor"
+        [allowEmpty]="false"
+        [disabled]="controlesDeshabilitados()"
+        [ngModel]="store.seleccion()?.beneficio ?? null"
+        (ngModelChange)="store.cambiarBeneficio($event)"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="fecha-jubilacion" class="etiqueta">Fecha de jubilación</label>
+      <p-calendar
+        data-testid="fecha-elegida"
+        inputId="fecha-jubilacion"
+        dateFormat="dd/mm/yy"
+        [firstDayOfWeek]="1"
+        [readonlyInput]="true"
+        [minDate]="fechaMinimaCalendario()"
+        [disabled]="controlesDeshabilitados()"
+        [ngModel]="fechaCalendario()"
+        (ngModelChange)="elegirFecha($event)"
+      />
+      @if (store.fechaMinimaElegida(); as minima) {
+        <p class="ayuda">No puede ser anterior al {{ mostrarFecha(minima) }}.</p>
+      }
+    </div>
+
+    @if (vista().mostrarErrorGeneracion) {
+      <div role="alert">
+        <p-message data-testid="error-generacion" severity="error" [text]="errorGeneracion" />
+      </div>
+    }
+
+    @if (vista().mostrarIndicador) {
+      <div data-testid="indicador-carga" class="indicador" role="status" aria-label="Cargando">
+        <p-progressSpinner styleClass="spinner" strokeWidth="6" ariaLabel="Cargando" />
+      </div>
+    }
+
+    <button
+      pButton
+      type="button"
+      class="accion accion-principal"
+      data-testid="proyectar"
+      label="Proyectar"
+      [disabled]="!vista().proyectarHabilitado"
+      (click)="store.proyectar()"
+    ></button>
+
+    @if (vista().mostrarTramite) {
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined accion"
+        data-testid="tramite"
+        [label]="textoTramite"
+        (click)="iniciarTramite()"
+      ></button>
+    }
+  </section>
+</main>

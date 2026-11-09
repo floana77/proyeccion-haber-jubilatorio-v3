@@ -1,0 +1,16 @@
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
+@import 'primeflex/primeflex.css';
+@import 'primeicons/primeicons.css';
+
+// Texto base de 18 px (RNF-04). PrimeNG y PrimeFlex escalan a partir de este valor.
+html {
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--surface-ground);
+}

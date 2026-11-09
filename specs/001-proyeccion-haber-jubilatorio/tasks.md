@@ -28,14 +28,14 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 **Purpose**: Crear el proyecto Angular, que todavía no existe en el repositorio
 
-- [ ] T001 Crear package.json con Angular 18.2, TypeScript ~5.5, RxJS ~7.8, zone.js ~0.14, PrimeNG ^17.18, PrimeFlex ^3.3, PrimeIcons ^7, Chart.js ^4.4, Karma ~6.4, Jasmine ~5.2 y @angular-builders/custom-webpack compatible con Angular 18, con los scripts `start`, `test` y `build`
-- [ ] T002 Crear angular.json con `@angular-builders/custom-webpack:browser`, dev-server y karma; salida `./build_package`; `customWebpackConfig` en `config/webpack.custom.js`; configuraciones `production` (por defecto en build, reemplaza `environment.ts` por `environment.prod.ts`), `qa` (reemplaza por `environment.qa.ts`, también en serve) y `development` (por defecto en serve)
-- [ ] T003 [P] Crear tsconfig.json, tsconfig.app.json y tsconfig.spec.json en modo estricto en la raíz del repositorio
-- [ ] T004 [P] Crear config/webpack.custom.js con una configuración adicional vacía que exporte un objeto válido
-- [ ] T005 [P] Crear karma.conf.js con Jasmine y el navegador ChromeHeadless, tomando la ruta de Chrome de la variable `CHROME_BIN`
-- [ ] T006 Crear src/index.html, src/main.ts, src/app/app.config.ts y src/app/app.component.ts como aplicación standalone mínima, sin router (research R9), y src/app/app.component.spec.ts con un test que compruebe que el componente se crea
-- [ ] T007 [P] Crear src/styles.scss con el tema de PrimeNG, PrimeFlex, PrimeIcons y texto base de 18 px (RNF-04)
-- [ ] T008 Instalar dependencias generando package-lock.json y comprobar que `npm test` y `npm run build` terminan sin errores; requiere Chrome instalado en la máquina
+- [X] T001 Crear package.json con Angular 18.2, TypeScript ~5.5, RxJS ~7.8, zone.js ~0.14, PrimeNG ^17.18, PrimeFlex ^3.3, PrimeIcons ^7, Chart.js ^4.4, Karma ~6.4, Jasmine ~5.2 y @angular-builders/custom-webpack compatible con Angular 18, con los scripts `start`, `test` y `build`
+- [X] T002 Crear angular.json con `@angular-builders/custom-webpack:browser`, dev-server y karma; salida `./build_package`; `customWebpackConfig` en `config/webpack.custom.js`; configuraciones `production` (por defecto en build, reemplaza `environment.ts` por `environment.prod.ts`), `qa` (reemplaza por `environment.qa.ts`, también en serve) y `development` (por defecto en serve)
+- [X] T003 [P] Crear tsconfig.json, tsconfig.app.json y tsconfig.spec.json en modo estricto en la raíz del repositorio
+- [X] T004 [P] Crear config/webpack.custom.js con una configuración adicional vacía que exporte un objeto válido
+- [X] T005 [P] Crear karma.conf.js con Jasmine y el navegador ChromeHeadless, tomando la ruta de Chrome de la variable `CHROME_BIN`
+- [X] T006 Crear src/index.html, src/main.ts, src/app/app.config.ts y src/app/app.component.ts como aplicación standalone mínima, sin router (research R9), y src/app/app.component.spec.ts con un test que compruebe que el componente se crea
+- [X] T007 [P] Crear src/styles.scss con el tema de PrimeNG, PrimeFlex, PrimeIcons y texto base de 18 px (RNF-04)
+- [X] T008 Instalar dependencias generando package-lock.json y comprobar que `npm test` y `npm run build` terminan sin errores; requiere Chrome instalado en la máquina
 
 **Checkpoint**: el proyecto compila y Karma corre
 
@@ -47,17 +47,17 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 **⚠️ CRITICAL**: Ninguna historia puede empezar hasta completar esta fase
 
-- [ ] T009 Crear src/app/proyeccion/domain/tipos.ts con `FechaIso` ("Texto `YYYY-MM-DD`", "Fecha calendario, sin hora"), `TipoBeneficio` (`ordinaria` o `parcial`, "Solo estos dos"), `EstadoMatricula` (`activa`, `cancelado`, `suspendido` o `fallecido`; "Solo `fallecido` impide proyectar"), `FechasMinimas` (`ordinaria` y `parcial`, "Las dos son obligatorias"), `SeleccionProyeccion` ("`fecha` ≥ fecha mínima del beneficio (RF-04); sin máximo") y `ReportePdf` (Blob, "No se persiste")
-- [ ] T010 [P] Escribir tests que fallen en src/app/proyeccion/platform/reloj-argentina.service.spec.ts: devuelve `YYYY-MM-DD` en zona `America/Argentina/Buenos_Aires` e incluye un instante en que la fecha UTC ya cambió y la de Argentina no
-- [ ] T011 Implementar `RelojArgentina.hoy()` con `Intl.DateTimeFormat` en src/app/proyeccion/platform/reloj-argentina.service.ts (research R3)
-- [ ] T012 [P] Crear la clase abstracta `ProyeccionGateway` con `obtenerEstadoMatricula()`, `obtenerFechasMinimas()` y `generarReporte(seleccion)`, cada una con un `Observable` de resultado único, en src/app/proyeccion/data/proyeccion.gateway.ts (contracts/proyeccion-gateway.md)
-- [ ] T013 Crear `ProyeccionEnMemoriaGateway`, su función de providers y los escenarios de quickstart.md elegidos por `?escenario=` (por defecto `futuras`), con fechas relativas a `RelojArgentina` y un PDF de prueba, en src/app/proyeccion/data/en-memoria/proyeccion-en-memoria.gateway.ts; la palabra `escenario` MUST NOT aparecer fuera de esta carpeta
-- [ ] T014 [P] Escribir tests que fallen en src/app/proyeccion/data/proyeccion-http.gateway.spec.ts: las tres operaciones informan error y no hacen llamadas HTTP
-- [ ] T015 Implementar `ProyeccionHttpGateway` temporal que informa error en todas las operaciones, y su función de providers, en src/app/proyeccion/data/proyeccion-http.gateway.ts (research R2)
-- [ ] T016 Crear src/environments/environment.ts con `production: false`, los providers del gateway en memoria y `solicitudJubilacionUrl` igual a `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`
-- [ ] T017 [P] Crear src/environments/environment.qa.ts con `production: false`, los providers del gateway en memoria y `solicitudJubilacionUrl` igual a `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`
-- [ ] T018 [P] Crear src/environments/environment.prod.ts con `production: true`, los providers de `ProyeccionHttpGateway` y `solicitudJubilacionUrl` igual a `https://www.cpbaonline.com.ar/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`; MUST NOT importar mocks ni contener URLs de Postman
-- [ ] T019 Registrar `environment.gatewayProviders` en src/app/app.config.ts
+- [X] T009 Crear src/app/proyeccion/domain/tipos.ts con `FechaIso` ("Texto `YYYY-MM-DD`", "Fecha calendario, sin hora"), `TipoBeneficio` (`ordinaria` o `parcial`, "Solo estos dos"), `EstadoMatricula` (`activa`, `cancelado`, `suspendido` o `fallecido`; "Solo `fallecido` impide proyectar"), `FechasMinimas` (`ordinaria` y `parcial`, "Las dos son obligatorias"), `SeleccionProyeccion` ("`fecha` ≥ fecha mínima del beneficio (RF-04); sin máximo") y `ReportePdf` (Blob, "No se persiste")
+- [X] T010 [P] Escribir tests que fallen en src/app/proyeccion/platform/reloj-argentina.service.spec.ts: devuelve `YYYY-MM-DD` en zona `America/Argentina/Buenos_Aires` e incluye un instante en que la fecha UTC ya cambió y la de Argentina no
+- [X] T011 Implementar `RelojArgentina.hoy()` con `Intl.DateTimeFormat` en src/app/proyeccion/platform/reloj-argentina.service.ts (research R3)
+- [X] T012 [P] Crear la clase abstracta `ProyeccionGateway` con `obtenerEstadoMatricula()`, `obtenerFechasMinimas()` y `generarReporte(seleccion)`, cada una con un `Observable` de resultado único, en src/app/proyeccion/data/proyeccion.gateway.ts (contracts/proyeccion-gateway.md)
+- [X] T013 Crear `ProyeccionEnMemoriaGateway`, su función de providers y los escenarios de quickstart.md elegidos por `?escenario=` (por defecto `futuras`), con fechas relativas a `RelojArgentina` y un PDF de prueba, en src/app/proyeccion/data/en-memoria/proyeccion-en-memoria.gateway.ts; la palabra `escenario` MUST NOT aparecer fuera de esta carpeta
+- [X] T014 [P] Escribir tests que fallen en src/app/proyeccion/data/proyeccion-http.gateway.spec.ts: las tres operaciones informan error y no hacen llamadas HTTP
+- [X] T015 Implementar `ProyeccionHttpGateway` temporal que informa error en todas las operaciones, y su función de providers, en src/app/proyeccion/data/proyeccion-http.gateway.ts (research R2)
+- [X] T016 Crear src/environments/environment.ts con `production: false`, los providers del gateway en memoria y `solicitudJubilacionUrl` igual a `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`
+- [X] T017 [P] Crear src/environments/environment.qa.ts con `production: false`, los providers del gateway en memoria y `solicitudJubilacionUrl` igual a `http://calidadonline2/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`
+- [X] T018 [P] Crear src/environments/environment.prod.ts con `production: true`, los providers de `ProyeccionHttpGateway` y `solicitudJubilacionUrl` igual a `https://www.cpbaonline.com.ar/apps/Main#/BeneficiosPrecarga/SolicitudJubilacion/Index`; MUST NOT importar mocks ni contener URLs de Postman
+- [X] T019 Registrar `environment.gatewayProviders` en src/app/app.config.ts
 
 **Checkpoint**: la base está lista y las historias pueden empezar
 
@@ -73,21 +73,21 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 > **NOTE: Escribir estos tests PRIMERO y comprobar que FALLEN antes de implementar**
 
-- [ ] T020 [P] [US1] Escribir tests de preselección en src/app/proyeccion/domain/preseleccion.spec.ts: AC-06 (Parcial menor), AC-07 (iguales, Ordinaria) y AC-08 (Parcial anterior a hoy se preselecciona igual)
-- [ ] T021 [P] [US1] Escribir tests en src/app/proyeccion/domain/vista-pantalla.spec.ts para las filas "Cargando" (sin alerta, sin botón de trámite, Proyectar deshabilitado), "Falla de carga" (mensaje RF-13, sin botón de trámite, Proyectar deshabilitado) y "Ninguna fecha cumplida" (sin alerta, sin botón, Proyectar habilitado), incluido Proyectar deshabilitado durante `generando`
-- [ ] T022 [P] [US1] Escribir tests en src/app/proyeccion/platform/pestana-reporte.service.spec.ts con `window` simulado: abre con `window.open` sin `noopener`, escribe "Generando su proyección…", muestra el PDF navegando a él, cierra la pestaña, devuelve nulo si el navegador la bloquea y libera el enlace temporal 60 s después de cargar el PDF
-- [ ] T023 [US1] Escribir tests en src/app/proyeccion/state/proyeccion.store.spec.ts con gateway simulado: carga exitosa (AC-01), `errorCarga` ante falla, sesión vencida o 10 s sin respuesta con `fakeAsync` (AC-25), preselección, generación con la selección (AC-15, AC-21), segundo clic sin nueva solicitud (AC-17), error con cierre de pestaña y reintento (AC-18), plazo de 10 s con `fakeAsync` y respuesta tardía descartada (AC-19) y pestaña bloqueada sin pedir el reporte (AC-27)
-- [ ] T024 [P] [US1] Escribir tests en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts: muestra las dos fechas mínimas (AC-01), beneficio y fecha propuestos, indicador de carga durante la generación (AC-17) y durante la carga inicial (AC-28), mensajes literales de RF-10 y RF-13 y sin control de reintento de carga (AC-25)
+- [X] T020 [P] [US1] Escribir tests de preselección en src/app/proyeccion/domain/preseleccion.spec.ts: AC-06 (Parcial menor), AC-07 (iguales, Ordinaria) y AC-08 (Parcial anterior a hoy se preselecciona igual)
+- [X] T021 [P] [US1] Escribir tests en src/app/proyeccion/domain/vista-pantalla.spec.ts para las filas "Cargando" (sin alerta, sin botón de trámite, Proyectar deshabilitado), "Falla de carga" (mensaje RF-13, sin botón de trámite, Proyectar deshabilitado) y "Ninguna fecha cumplida" (sin alerta, sin botón, Proyectar habilitado), incluido Proyectar deshabilitado durante `generando`
+- [X] T022 [P] [US1] Escribir tests en src/app/proyeccion/platform/pestana-reporte.service.spec.ts con `window` simulado: abre con `window.open` sin `noopener`, escribe "Generando su proyección…", muestra el PDF navegando a él, cierra la pestaña, devuelve nulo si el navegador la bloquea y libera el enlace temporal 60 s después de cargar el PDF
+- [X] T023 [US1] Escribir tests en src/app/proyeccion/state/proyeccion.store.spec.ts con gateway simulado: carga exitosa (AC-01), `errorCarga` ante falla, sesión vencida o 10 s sin respuesta con `fakeAsync` (AC-25), preselección, generación con la selección (AC-15, AC-21), segundo clic sin nueva solicitud (AC-17), error con cierre de pestaña y reintento (AC-18), plazo de 10 s con `fakeAsync` y respuesta tardía descartada (AC-19) y pestaña bloqueada sin pedir el reporte (AC-27)
+- [X] T024 [P] [US1] Escribir tests en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts: muestra las dos fechas mínimas (AC-01), beneficio y fecha propuestos, indicador de carga durante la generación (AC-17) y durante la carga inicial (AC-28), mensajes literales de RF-10 y RF-13 y sin control de reintento de carga (AC-25)
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Implementar la preselección en src/app/proyeccion/domain/preseleccion.ts (RF-07): "Si son iguales, se elige `ordinaria`"
-- [ ] T026 [P] [US1] Implementar `calcularVista` para las filas de T021, incluida "Cargando", en src/app/proyeccion/domain/vista-pantalla.ts
-- [ ] T027 [P] [US1] Implementar `PestanaReporte` en src/app/proyeccion/platform/pestana-reporte.service.ts (research R4), liberando el enlace temporal del PDF 60 s después de cargarlo
-- [ ] T028 [US1] Implementar `ProyeccionStore` con signals y estados `cargando`, `lista`, `errorCarga` e `inactiva`, `generando`, `error` en src/app/proyeccion/state/proyeccion.store.ts, con la secuencia de carga de data-model.md (primero el estado y luego las fechas) y `timeout(10_000)` sobre toda la secuencia; `window.open` MUST ejecutarse de forma sincrónica en el clic y el plazo de la generación con `timeout(10_000)` (research R5)
-- [ ] T029 [US1] Implementar la pantalla con beneficio y fecha como texto, botón **Proyectar**, indicador y `p-message` en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.ts y proyeccion-page.component.html, sin reglas de decisión en la plantilla
-- [ ] T030 [US1] Mostrar la pantalla desde src/app/app.component.ts y proveer `ProyeccionStore` a nivel de la pantalla
-- [ ] T031 [US1] Comprobar con `npm start` los escenarios `futuras`, `futuras-iguales`, `parcial-menor`, `parcial-vencida`, `error-carga`, `lento`, `error-reporte`, `sin-respuesta`, `carga-lenta` y `carga-sin-respuesta` de specs/001-proyeccion-haber-jubilatorio/quickstart.md
+- [X] T025 [P] [US1] Implementar la preselección en src/app/proyeccion/domain/preseleccion.ts (RF-07): "Si son iguales, se elige `ordinaria`"
+- [X] T026 [P] [US1] Implementar `calcularVista` para las filas de T021, incluida "Cargando", en src/app/proyeccion/domain/vista-pantalla.ts
+- [X] T027 [P] [US1] Implementar `PestanaReporte` en src/app/proyeccion/platform/pestana-reporte.service.ts (research R4), liberando el enlace temporal del PDF 60 s después de cargarlo
+- [X] T028 [US1] Implementar `ProyeccionStore` con signals y estados `cargando`, `lista`, `errorCarga` e `inactiva`, `generando`, `error` en src/app/proyeccion/state/proyeccion.store.ts, con la secuencia de carga de data-model.md (primero el estado y luego las fechas) y `timeout(10_000)` sobre toda la secuencia; `window.open` MUST ejecutarse de forma sincrónica en el clic y el plazo de la generación con `timeout(10_000)` (research R5)
+- [X] T029 [US1] Implementar la pantalla con beneficio y fecha como texto, botón **Proyectar**, indicador y `p-message` en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.ts y proyeccion-page.component.html, sin reglas de decisión en la plantilla
+- [X] T030 [US1] Mostrar la pantalla desde src/app/app.component.ts y proveer `ProyeccionStore` a nivel de la pantalla
+- [X] T031 [US1] Comprobar con `npm start` los escenarios `futuras`, `futuras-iguales`, `parcial-menor`, `parcial-vencida`, `error-carga`, `lento`, `error-reporte`, `sin-respuesta`, `carga-lenta` y `carga-sin-respuesta` de specs/001-proyeccion-haber-jubilatorio/quickstart.md
 
 **Checkpoint**: la Historia 1 funciona de punta a punta con mocks
 
@@ -101,17 +101,17 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T032 [P] [US2] Escribir tests en src/app/proyeccion/domain/seleccion.spec.ts: el cambio de beneficio reemplaza la fecha por la mínima (AC-09), acepta F + 1 año (AC-10), acepta F y rechaza F − 1 (AC-11), sin fecha máxima
-- [ ] T033 [P] [US2] Escribir tests en src/app/proyeccion/ui/fecha-calendario.spec.ts: conversión de `FechaIso` a `Date` local y viceversa sin corrimiento de un día
-- [ ] T034 [US2] Agregar a src/app/proyeccion/state/proyeccion.store.spec.ts tests de cambio de beneficio y de fecha, y de que el reporte usa la selección vigente
-- [ ] T035 [US2] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests del selector: entrada de solo lectura (AC-12), fecha mínima aplicada (AC-11) y sin máximo
+- [X] T032 [P] [US2] Escribir tests en src/app/proyeccion/domain/seleccion.spec.ts: el cambio de beneficio reemplaza la fecha por la mínima (AC-09), acepta F + 1 año (AC-10), acepta F y rechaza F − 1 (AC-11), sin fecha máxima
+- [X] T033 [P] [US2] Escribir tests en src/app/proyeccion/ui/fecha-calendario.spec.ts: conversión de `FechaIso` a `Date` local y viceversa sin corrimiento de un día
+- [X] T034 [US2] Agregar a src/app/proyeccion/state/proyeccion.store.spec.ts tests de cambio de beneficio y de fecha, y de que el reporte usa la selección vigente
+- [X] T035 [US2] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests del selector: entrada de solo lectura (AC-12), fecha mínima aplicada (AC-11) y sin máximo
 
 ### Implementation for User Story 2
 
-- [ ] T036 [P] [US2] Implementar `cambiarBeneficio` y `elegirFecha` en src/app/proyeccion/domain/seleccion.ts (RF-03, RF-04, RF-12)
-- [ ] T037 [P] [US2] Implementar la conversión de fechas en src/app/proyeccion/ui/fecha-calendario.ts (research R3)
-- [ ] T038 [US2] Agregar las acciones de cambio a src/app/proyeccion/state/proyeccion.store.ts
-- [ ] T039 [US2] Reemplazar el texto por `p-selectButton` y `p-calendar` con `readonlyInput`, `minDate` y sin `maxDate` en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html y proyeccion-page.component.ts (research R7)
+- [X] T036 [P] [US2] Implementar `cambiarBeneficio` y `elegirFecha` en src/app/proyeccion/domain/seleccion.ts (RF-03, RF-04, RF-12)
+- [X] T037 [P] [US2] Implementar la conversión de fechas en src/app/proyeccion/ui/fecha-calendario.ts (research R3)
+- [X] T038 [US2] Agregar las acciones de cambio a src/app/proyeccion/state/proyeccion.store.ts
+- [X] T039 [US2] Reemplazar el texto por `p-selectButton` y `p-calendar` con `readonlyInput`, `minDate` y sin `maxDate` en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html y proyeccion-page.component.ts (research R7)
 
 **Checkpoint**: las Historias 1 y 2 funcionan
 
@@ -125,15 +125,15 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T040 [P] [US3] Agregar a src/app/proyeccion/domain/vista-pantalla.spec.ts las filas "Las dos fechas cumplidas" (alerta RF-11, trámite, Proyectar habilitado; AC-02, AC-03) y "Solo una fecha cumplida" (sin alerta, trámite, Proyectar habilitado; AC-04), y el caso de ninguna cumplida con las dos en mañana (AC-05)
-- [ ] T041 [P] [US3] Escribir tests en src/app/proyeccion/platform/navegacion.service.spec.ts: navega en la misma pestaña a la URL recibida
-- [ ] T042 [US3] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests de textos literales de alerta y botón, y de que el clic navega a `environment.solicitudJubilacionUrl` (AC-26)
+- [X] T040 [P] [US3] Agregar a src/app/proyeccion/domain/vista-pantalla.spec.ts las filas "Las dos fechas cumplidas" (alerta RF-11, trámite, Proyectar habilitado; AC-02, AC-03) y "Solo una fecha cumplida" (sin alerta, trámite, Proyectar habilitado; AC-04), y el caso de ninguna cumplida con las dos en mañana (AC-05)
+- [X] T041 [P] [US3] Escribir tests en src/app/proyeccion/platform/navegacion.service.spec.ts: navega en la misma pestaña a la URL recibida
+- [X] T042 [US3] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests de textos literales de alerta y botón, y de que el clic navega a `environment.solicitudJubilacionUrl` (AC-26)
 
 ### Implementation for User Story 3
 
-- [ ] T043 [P] [US3] Completar `calcularVista` con las filas de T040 en src/app/proyeccion/domain/vista-pantalla.ts ("Cumplida" significa fecha mínima ≤ `hoy`)
-- [ ] T044 [P] [US3] Implementar `Navegacion` con `window.location.assign` en src/app/proyeccion/platform/navegacion.service.ts
-- [ ] T045 [US3] Agregar la alerta y el botón de trámite en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html y proyeccion-page.component.ts
+- [X] T043 [P] [US3] Completar `calcularVista` con las filas de T040 en src/app/proyeccion/domain/vista-pantalla.ts ("Cumplida" significa fecha mínima ≤ `hoy`)
+- [X] T044 [P] [US3] Implementar `Navegacion` con `window.location.assign` en src/app/proyeccion/platform/navegacion.service.ts
+- [X] T045 [US3] Agregar la alerta y el botón de trámite en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html y proyeccion-page.component.ts
 
 **Checkpoint**: la Historia 3 funciona con los escenarios indicados
 
@@ -147,15 +147,15 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T046 [P] [US4] Agregar a src/app/proyeccion/domain/vista-pantalla.spec.ts la fila "`fallecido`, con cualquier fecha" (alerta RF-05, sin alerta RF-11, sin trámite, Proyectar deshabilitado; AC-13) y `activa`, `cancelado` y `suspendido` habilitados (AC-14)
-- [ ] T047 [P] [US4] Agregar a src/app/proyeccion/state/proyeccion.store.spec.ts tests de que con `fallecido` se pasa al estado `fallecido` y no se llama a `obtenerFechasMinimas()` (RF-05)
-- [ ] T048 [US4] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests del texto literal de RF-05 y de que beneficio y fecha quedan sin valores y no se pueden operar
+- [X] T046 [P] [US4] Agregar a src/app/proyeccion/domain/vista-pantalla.spec.ts la fila "`fallecido`, con cualquier fecha" (alerta RF-05, sin alerta RF-11, sin trámite, Proyectar deshabilitado; AC-13) y `activa`, `cancelado` y `suspendido` habilitados (AC-14)
+- [X] T047 [P] [US4] Agregar a src/app/proyeccion/state/proyeccion.store.spec.ts tests de que con `fallecido` se pasa al estado `fallecido` y no se llama a `obtenerFechasMinimas()` (RF-05)
+- [X] T048 [US4] Agregar a src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.spec.ts tests del texto literal de RF-05 y de que beneficio y fecha quedan sin valores y no se pueden operar
 
 ### Implementation for User Story 4
 
-- [ ] T049 [P] [US4] Completar `calcularVista` con la fila de fallecido en src/app/proyeccion/domain/vista-pantalla.ts
-- [ ] T050 [P] [US4] Agregar el estado `fallecido` a src/app/proyeccion/state/proyeccion.store.ts: con ese estado no se piden las fechas mínimas
-- [ ] T051 [US4] Agregar la alerta de fallecido y deshabilitar los controles en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
+- [X] T049 [P] [US4] Completar `calcularVista` con la fila de fallecido en src/app/proyeccion/domain/vista-pantalla.ts
+- [X] T050 [P] [US4] Agregar el estado `fallecido` a src/app/proyeccion/state/proyeccion.store.ts: con ese estado no se piden las fechas mínimas
+- [X] T051 [US4] Agregar la alerta de fallecido y deshabilitar los controles en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
 
 **Checkpoint**: las cuatro historias funcionales están completas
 
@@ -169,9 +169,9 @@ Proyecto Angular único en la raíz. La feature vive en `src/app/proyeccion/` y 
 
 Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 
-- [ ] T052 [US5] Aplicar el diseño "Opción A — Tarjeta única guiada" y el responsive de 360 a 1920 px, con **Proyectar** visible sin scroll desde 360×640, en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss
-- [ ] T053 [US5] Ajustar en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss los componentes de PrimeNG: contraste ≥ 4,5:1 (texto normal) y ≥ 3:1 (texto grande), texto ≥ 18 px, áreas táctiles ≥ 44×44 px y separación ≥ 8 px
-- [ ] T054 [US5] Agregar etiquetas accesibles a selectores, indicador y alertas en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
+- [X] T052 [US5] Aplicar el diseño "Opción A — Tarjeta única guiada" y el responsive de 360 a 1920 px, con **Proyectar** visible sin scroll desde 360×640, en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss
+- [X] T053 [US5] Ajustar en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.scss los componentes de PrimeNG: contraste ≥ 4,5:1 (texto normal) y ≥ 3:1 (texto grande), texto ≥ 18 px, áreas táctiles ≥ 44×44 px y separación ≥ 8 px
+- [X] T054 [US5] Agregar etiquetas accesibles a selectores, indicador y alertas en src/app/proyeccion/ui/proyeccion-page/proyeccion-page.component.html
 - [ ] T055 [US5] (manual: la realiza una persona) Crear specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md y registrar ahí la verificación de AC-22 en 360×640, 768×1024, 1024×768 y 1920×1080
 - [ ] T056 [US5] (manual: la realiza una persona) Auditar con axe y medir los elementos (AC-23), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
 - [ ] T057 [US5] (manual: la realiza una persona) Ejecutar en los 5 navegadores AC-02 a AC-14, AC-17 a AC-19, AC-21 y AC-25 a AC-28 con mocks, en los navegadores a los que aplican (AC-24), registrando el resultado en specs/001-proyeccion-haber-jubilatorio/checklists/verificacion-manual.md
@@ -186,11 +186,11 @@ Sin tests unitarios: es layout y estilo, exceptuados por el principio II.
 
 **Purpose**: Cierre de la primera versión
 
-- [ ] T060 Correr `npm test` y corregir fallas en src/app/proyeccion/
-- [ ] T061 Comprobar que `npm run build -- -c qa` termina sin errores y genera build_package/
-- [ ] T062 Correr `npm run build` después del build de QA y ejecutar los dos `grep` de "Verificación de producción sin mocks" de specs/001-proyeccion-haber-jubilatorio/quickstart.md, sin coincidencias
-- [ ] T063 Revisar src/ para confirmar que no hay credenciales ni tokens (principio III), que los `environment*.ts` solo tienen configuración no secreta y que `src/app/proyeccion/domain/` no importa código de `ui/`, `data/` ni `platform/`
-- [ ] T064 Recorrer los escenarios de specs/001-proyeccion-haber-jubilatorio/quickstart.md en QA con `npm start -- -c qa`
+- [X] T060 Correr `npm test` y corregir fallas en src/app/proyeccion/
+- [X] T061 Comprobar que `npm run build -- -c qa` termina sin errores y genera build_package/
+- [X] T062 Correr `npm run build` después del build de QA y ejecutar los dos `grep` de "Verificación de producción sin mocks" de specs/001-proyeccion-haber-jubilatorio/quickstart.md, sin coincidencias
+- [X] T063 Revisar src/ para confirmar que no hay credenciales ni tokens (principio III), que los `environment*.ts` solo tienen configuración no secreta y que `src/app/proyeccion/domain/` no importa código de `ui/`, `data/` ni `platform/`
+- [X] T064 Recorrer los escenarios de specs/001-proyeccion-haber-jubilatorio/quickstart.md en QA con `npm start -- -c qa`
 
 **Checkpoint**: primera versión completa. **No sale a producción**
 

@@ -28,8 +28,8 @@ Con `npm start` o `npm start -- -c qa`, el gateway en memoria elige los datos co
 
 | Escenario | Datos | Se comprueba |
 |-----------|-------|--------------|
-| `futuras` | Estado activa, las dos fechas posteriores a hoy | AC-05, AC-21 |
-| `futuras-iguales` | Las dos fechas iguales y posteriores a hoy | AC-07 |
+| `futuras` | Estado activa, las dos fechas posteriores a hoy | AC-21 |
+| `futuras-iguales` | Las dos fechas iguales a mañana | AC-05, AC-07 |
 | `parcial-menor` | Parcial anterior a Ordinaria | AC-06, AC-09, AC-10, AC-11, AC-12 |
 | `parcial-vencida` | Parcial anterior a hoy, Ordinaria posterior | AC-08 |
 | `una-hoy` | Parcial igual a hoy, Ordinaria mañana | AC-04, AC-26 |

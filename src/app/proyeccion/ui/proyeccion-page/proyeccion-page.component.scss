@@ -1,0 +1,232 @@
+// Diseño "Opción A — Tarjeta única guiada", con los umbrales de RNF-03 y RNF-04.
+$verde-oscuro: #1a3021;
+$verde-panel: #ebf1e7;
+$verde-fondo: #d8e2d3;
+$verde-borde: #b7c6b0;
+$texto-suave: #43524a;
+$area-tactil: 44px;
+$separacion: 8px;
+
+:host {
+  display: block;
+  color: $verde-oscuro;
+}
+
+.proyeccion {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: $separacion;
+  border-top: 4px solid $verde-oscuro;
+  background-color: $verde-fondo;
+
+  @media (min-width: 768px) {
+    padding: 2.5rem 1rem;
+  }
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: $separacion;
+  box-sizing: border-box;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #fff;
+
+  @media (min-width: 768px) {
+    gap: 1.25rem;
+    padding: 2.5rem;
+  }
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  line-height: 1.25;
+
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.panel {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  background-color: $verde-panel;
+}
+
+.panel-titulo {
+  margin: 0 0 0.25rem;
+  color: $texto-suave;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+dl {
+  margin: 0;
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.125rem 0;
+}
+
+dt {
+  margin: 0;
+}
+
+dd {
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.etiqueta {
+  font-weight: 700;
+}
+
+.ayuda {
+  margin: 0;
+  color: $texto-suave;
+  font-size: 1rem;
+}
+
+.indicador {
+  display: flex;
+  justify-content: center;
+}
+
+.accion {
+  justify-content: center;
+  width: 100%;
+  min-height: $area-tactil;
+}
+
+.accion-principal {
+  border-color: $verde-oscuro;
+  background-color: $verde-oscuro;
+  color: #fff;
+  font-weight: 700;
+}
+
+.p-button-outlined {
+  border-color: $verde-oscuro;
+  color: $verde-oscuro;
+}
+
+:host ::ng-deep {
+  .spinner {
+    width: $area-tactil;
+    height: $area-tactil;
+  }
+
+  .p-message,
+  .p-inline-message {
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .p-inline-message-text {
+    font-size: 1rem;
+  }
+
+  .p-message.p-message-success,
+  .p-inline-message.p-inline-message-success {
+    color: $verde-oscuro;
+  }
+
+  .p-selectbutton {
+    display: flex;
+    gap: $separacion;
+
+    .p-button {
+      flex: 1 1 0;
+      justify-content: center;
+      min-height: $area-tactil;
+      border: 1px solid $verde-oscuro;
+      border-radius: 0.5rem;
+      background-color: #fff;
+      color: $verde-oscuro;
+      text-align: center;
+
+      &.p-highlight {
+        background-color: $verde-oscuro;
+        color: #fff;
+      }
+
+      &.p-disabled {
+        border-color: $verde-borde;
+      }
+    }
+  }
+
+  .p-calendar {
+    width: 100%;
+    max-width: 16rem;
+
+    .p-inputtext {
+      min-height: $area-tactil;
+      border-color: $verde-oscuro;
+      color: $verde-oscuro;
+      font-size: 1rem;
+    }
+  }
+
+  // Días y flechas del selector: áreas de 44×44 px separadas por 8 px.
+  .p-datepicker {
+    .p-datepicker-prev,
+    .p-datepicker-next,
+    .p-datepicker-title button {
+      min-width: $area-tactil;
+      min-height: $area-tactil;
+    }
+
+    table {
+      margin: 0;
+
+      td {
+        padding: calc($separacion / 2);
+
+        > span {
+          width: $area-tactil;
+          height: $area-tactil;
+        }
+
+        > span.p-highlight {
+          background-color: $verde-oscuro;
+          color: #fff;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      // Queda a 2 px del borde de la pantalla: 8 px del margen de página + 18 px de la tarjeta.
+      left: -24px !important;
+      box-sizing: border-box;
+      width: 356px !important;
+      min-width: 0 !important;
+      padding: 0;
+
+      table td:first-child {
+        padding-left: 0;
+      }
+
+      table td:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Build y caché de Angular
+build_package/
+dist/
+build/
+.angular/
+coverage/
+
+# Logs y variables locales
+*.log
+.env*
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
